@@ -18,6 +18,7 @@ import BillListItem from "./components/BillListItem";
 import BillService from "../service/BillService";
 import Months from "../service/Months";
 import Legend from "./components/Legend";
+import Label from "./components/Label";
 
 const IN = 'IN';
 const OUT = 'OUT';
@@ -102,6 +103,13 @@ const HomeScreen = ({navigation}) => {
           ListHeaderComponent={() => {
             return (
               <View>
+                <View>
+                  <TouchableHighlight underlayColor='#ddd' 
+                      onPress={() => navigation.navigate('Garage')}>
+
+                    <Label value='Ir pra Garagem'/>
+                  </TouchableHighlight>
+                </View>
                 <TitleLabel value={wellcomeMsg}/>
 
                 <BalanceCards balance={new Number(getBalanceVal())} 
@@ -115,7 +123,7 @@ const HomeScreen = ({navigation}) => {
                     style={refreshBtnStyle}
                     onPress={() => init()}>
                   
-                  <Legend value='Atualizar'/>
+                  <Legend value='Atualizar lista'/>
                 </TouchableHighlight>
 
                 <View style={listOptionsStyle}>
