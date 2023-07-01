@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-
 import {
   FlatList,
   View,
@@ -8,9 +7,8 @@ import {
   Dimensions,
   StatusBar
 } from 'react-native';
-
 import { useIsFocused } from "@react-navigation/native";
-
+import { faWarehouse, faCalculator } from '@fortawesome/free-solid-svg-icons';
 import BalanceCards from "./components/BalanceCards";
 import FloatBtn from './components/FloatBtn';
 import TitleLabel from './components/TitleLabel';
@@ -18,53 +16,78 @@ import BillListItem from "./components/BillListItem";
 import BillService from "../service/BillService";
 import Months from "../service/Months";
 import Legend from "./components/Legend";
+import HeaderNavigator from "./components/HeaderNavigator";
+import Modal from "./components/Modal";
 import Label from "./components/Label";
+import Board from "./components/Board";
 
 const IN = 'IN';
 const OUT = 'OUT';
 
+const PAGAR = 'PAGAR';
+
+const TODAY = new Date();
+
+const MODAL_OPTIONS = [
+  {
+    dt:new Date(TODAY.getFullYear(), TODAY.getMonth() - 1, 10), 
+    lbl: `${Months.names[TODAY.getMonth() - 1]}/${TODAY.getFullYear()}`,
+    bold:false
+  },
+  {
+    dt:new Date(TODAY.getFullYear(), TODAY.getMonth(), 10), 
+    lbl: `${Months.names[TODAY.getMonth()]}/${TODAY.getFullYear()}`,
+    bold:true
+  },
+  {
+    dt:new Date(TODAY.getFullYear(), TODAY.getMonth() + 1, 10), 
+    lbl: `${Months.names[TODAY.getMonth() + 1]}/${TODAY.getFullYear()}`,
+    bold:false
+  },
+  {
+    dt:new Date(TODAY.getFullYear(), TODAY.getMonth() + 2, 10), 
+    lbl: `${Months.names[TODAY.getMonth() + 2]}/${TODAY.getFullYear()}`,
+    bold:false
+  },
+]
+
 const HomeScreen = ({navigation}) => {
   const [itens, setItens] = useState([]);
-  const [wellcomeMsg, setWellcomeMsg] = useState('');
-  const isFocused = useIsFocused();
+  const [showModal, setShowModal] = useState(false);
+  const [openBills, setOpenBills] = useState(false);
+  const [d, setD] = useState(new Date());
+
+  const focus = useIsFocused();
 
   useEffect(() => {
-    if(isFocused)
+    if(focus)
       init();
-  },[isFocused]);
+  },[focus]);
 
   const init = () => {
     reset();
 
-    loadItens();
-    loadWelcomeMsg();
+    loadItens(d);
   }
 
   const reset = () => {
     setItens([]);
+
+    setOpenBills(false);
   }
 
-  const loadItens = () => {
-    const d = new Date();
+  const loadItens = (dataRef) => {
+    let m = Months.names[d.getMonth()];
+    let a = d.getFullYear();
 
-    BillService.getByMonthAndYear(
-                  Months.names[d.getMonth()], 
-                  d.getFullYear())
-                .then((result) => setItens(result))
+    if(dataRef && dataRef !== null) {
+      m = Months.names[dataRef.getMonth()];
+      a = dataRef.getFullYear();
+    }
+
+    BillService.getByMonthAndYear(m, a)
+                .then((result) => {setItens(result); loadBoard(result);})
                 .catch((e) => console.log(e));
-  }
-
-  const loadWelcomeMsg = () => {
-    let hour = new Date().getHours();
-
-    let msg = 'Boa noite!';
-
-    if(hour > 5 || hour < 12)
-      msg = 'Bom dia!';
-    else if(hour > 12 || hour < 18)
-      msg = 'Boa tarde!';
-
-    setWellcomeMsg(`Olá! ${msg}`);
   }
 
   const getTotalBillsVal = () => {
@@ -90,50 +113,88 @@ const HomeScreen = ({navigation}) => {
   }
 
   const getMonthLegendLabel = () => {
-    const d = new Date();
+    if(d && d !== null)
+      return `${Months.names[d.getMonth()]}/${d.getFullYear()}`;
 
-    return `${Months.names[d.getMonth()]}/${d.getFullYear()}`;
+    return '';
+  }
+
+  const onSelectOption = (option) => {
+    setD(option);
+
+    setShowModal(false);
+
+    loadItens(option);
+  }
+
+  const loadBoard = (is) => {
+    setOpenBills(false);
+
+    for(let i=0; i < is.length; i++){
+      if(OUT === is[i].type){
+        BillService.getStatus(is[i].id, is[i].refMonth, is[i].refYear)
+                  .then((sts) => {
+                    if(PAGAR === sts)
+                      setOpenBills(true);
+                  })
+                  .catch((e) => console.log(e));
+      }
+    }
+  }
+
+  const getBoard = () => {
+    if(openBills)
+      return <Board content={<Label value={openBills ? 'Existem contas em aberto!' : 'Ok!'}/>}/>;
+
+    return <></>
+  }
+
+  const update = () => {
+    loadItens(d);
   }
 
   return (
     <>
       <StatusBar backgroundColor='#06901E'/>
-      <View>
+      <View style={bkg}>
         <FlatList
           ListHeaderComponent={() => {
             return (
-              <View>
-                <View>
-                  <TouchableHighlight underlayColor='#ddd' 
-                      onPress={() => navigation.navigate('Garage')}>
+              <View style={bkg}>
+                <HeaderNavigator icon={faWarehouse} 
+                    navigation={navigation}
+                    action={() => navigation.navigate('Garage')} />
 
-                    <Label value='Ir pra Garagem'/>
-                  </TouchableHighlight>
-                </View>
-                <TitleLabel value={wellcomeMsg}/>
+                <TitleLabel value='Carteira' customStyle={title}/>
 
                 <BalanceCards balance={new Number(getBalanceVal())} 
                     totalBills={new Number(getTotalBillsVal())}
                 />
 
-                <TitleLabel value='Contas e gastos'/>
+                {getBoard()}
+
+                <TitleLabel value='Contas e gastos' customStyle={title}/>
 
                 <TouchableHighlight 
-                    underlayColor='#ddd'
+                    underlayColor='#e1fce8'
                     style={refreshBtnStyle}
-                    onPress={() => init()}>
+                    onPress={() => update()}>
                   
-                  <Legend value='Atualizar lista'/>
+                  <Legend value='Atualizar'/>
                 </TouchableHighlight>
 
                 <View style={listOptionsStyle}>
-                  <Legend 
-                      style={loLblStyle}
-                      value={`${getMonthLegendLabel()}`}
-                  />
+                  <TouchableHighlight 
+                      underlayColor='#e1fce8'
+                      onPress={() => setShowModal(!showModal)}>
+                    
+                    <Legend style={loLblStyle} 
+                        value={`${getMonthLegendLabel()}`}/>
+
+                  </TouchableHighlight>
 
                   <TouchableHighlight 
-                      underlayColor='#ddd'
+                      underlayColor='#e1fce8'
                       style={loBtnStyle}
                       onPress={() => navigation.navigate('Bills')}>
                     
@@ -147,19 +208,52 @@ const HomeScreen = ({navigation}) => {
           data={itens}
           style={{marginBottom: 80}}
           keyExtractor={(item) => item.id}
-          renderItem={({item}) => <BillListItem bill={item} />}
+          renderItem={({item}) => <BillListItem bill={item} onUpdateBillStatus={() => update()}/>}
         />
 
-        <FloatBtn label='Adicionar conta ou gasto' 
+        <FloatBtn icon={faCalculator} label='Adicionar conta ou gasto' 
             action={() => navigation.navigate('AddBill')} 
         />
 
       </View>
+
+      <Modal isActive={showModal} onClose={() => setShowModal(!showModal)}
+          content={
+            <View>
+              <FlatList 
+                  data={MODAL_OPTIONS}
+                  keyExtractor={(m, i) => m.lbl + i}
+                  ListHeaderComponent={() => {
+                    return (
+                      <View style={modalHeaderlbl}>
+                        <Label value='Selecione um mês:'/>
+                      </View>
+                    )
+                  }}
+                  renderItem={({item}) => {
+                    return (
+                      <TouchableHighlight underlayColor='#e1fce8' 
+                          style={modalOption}
+                          onPress={() => onSelectOption(item.dt)}>
+
+                        <Label value={item.lbl} customStyle={{fontSize: item.bold ? 20 : 16}}/>
+                        
+                      </TouchableHighlight>
+                    );
+                  }}
+              />
+            </View>
+          }
+      />
     </>
   );
 }
 
 const screenWidth = Dimensions.get('window').width;
+
+const title = StyleSheet.create({
+  textAlign:'center',
+});
 
 const listOptionsStyle = StyleSheet.create({
   width: screenWidth,
@@ -185,6 +279,26 @@ const refreshBtnStyle = StyleSheet.create({
   flexDirection: 'row',
   justifyContent:'center',
   paddingVertical: 10,
+});
+
+const bkg = StyleSheet.create({
+  backgroundColor:'#e8faed'
+});
+
+const headerOptions = StyleSheet.create({
+  flexDirection:'row',
+  width:screenWidth,
+  paddingHorizontal:10,
+  justifyContent:'space-between'
+});
+
+const modalHeaderlbl = StyleSheet.create({
+  flexDirection:'row',
+  justifyContent:'center',
+});
+
+const modalOption = StyleSheet.create({
+  margin:10
 });
 
 export default HomeScreen;

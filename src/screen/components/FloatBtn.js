@@ -4,35 +4,56 @@ import {
   Text,
   TouchableHighlight,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  View
 } from 'react-native';
 
-const FloatBtn = ({label, customStyle, action}) => {
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCircle} from '@fortawesome/free-solid-svg-icons';
+
+const FloatBtn = ({label, icon=null, customStyle={}, action}) => {
   return (
-    <TouchableHighlight style={[btnStyle, customStyle]} 
-        underlayColor='#fff'
+    <TouchableHighlight style={[styles.btnStyle, customStyle]} 
+        underlayColor='#e1fce8' 
         onPress={() => action()}>
-      <Text style={lblStyle}>{label}</Text>
+
+      <View style={styles.lblWrap}>
+        <FontAwesomeIcon icon={icon !== null ? icon : faCircle} 
+            style={[styles.iconStyle, icon !== null ? {} : {marginTop:10}]}
+            size={icon !== null ? 15 : 5} 
+        />
+        <Text style={styles.lblStyle}>{label}</Text>
+      </View>
     </TouchableHighlight>
   );
 };
 
 const screenWidth = Dimensions.get('window').width;
 
-const btnStyle = StyleSheet.create({
-  left: 20,
-  bottom: 10,
-  borderRadius: 50,
-  paddingVertical: 20,
-  position:'absolute',
-  width: screenWidth - 40,
-  backgroundColor: '#06901E',
-});
-
-const lblStyle = StyleSheet.create({
-  color: '#fff',
-  fontSize: 18,
-  textAlign: 'center'
+const styles = StyleSheet.create({
+  btnStyle: {
+    left: 10,
+    bottom: 10,
+    borderRadius: 10,
+    paddingVertical: 20,
+    position:'absolute',
+    width: screenWidth - 20,
+    backgroundColor: '#06901E',
+  },
+  lblStyle: {
+    color: '#fff',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  lblWrap: {
+    flexDirection:'row',
+    justifyContent:'center'
+  },
+  iconStyle: {
+    marginTop:5,
+    marginRight:10,
+    color:'#fff'
+  }
 });
 
 export default FloatBtn;

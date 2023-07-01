@@ -1,36 +1,47 @@
 import {
   View,
-  TouchableHighlight,
   StyleSheet,
   Dimensions,
-  StatusBar
+  StatusBar,
+  Text,
 } from 'react-native';
 
-import TitleLabel from './components/TitleLabel';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faWarehouse } from '@fortawesome/free-solid-svg-icons/faWarehouse';
+import { faWallet } from '@fortawesome/free-solid-svg-icons/faWallet';
+
+import Side from './components/Side';
+
+const ICON_SIZE = 30;
 
 const HomeNewScreen = ({navigation}) => {
   return (
     <>
-      <StatusBar backgroundColor='#06901E'/>
+      <StatusBar backgroundColor='#e8faed'/>
+
       <View style={nextPageOptStyle}>
 
-        <TouchableHighlight 
-            underlayColor='#ddd'
-            style={refreshBtnStyle}
-            onPress={() => navigation.navigate('Garage')}>
-          
-          <TitleLabel value='Garagem'/>
+        <Side action={() => navigation.navigate('Garage')}
+            style={{backgroundColor:'#e8faed'}}
+            content={(
+              <>
+                <FontAwesomeIcon icon={faWarehouse} size={ICON_SIZE} color={sideTitle.color}/>
 
-        </TouchableHighlight>
+                <Text style={sideTitle}>Garagem</Text>
+              </>
+            )}
+        />
 
-        <TouchableHighlight 
-            underlayColor='#ddd'
-            style={refreshBtnStyle}
-            onPress={() => navigation.navigate('Home')}>
-          
-          <TitleLabel value='Carteira de Gastos'/>
+        <Side action={() => navigation.navigate('Home')}
+            style={{backgroundColor:'#e0ffe9'}}
+            content={(
+              <>
+                <FontAwesomeIcon icon={faWallet} size={ICON_SIZE} color={sideTitle.color}/>
 
-        </TouchableHighlight>
+                <Text style={sideTitle}>Carteira</Text>
+              </>
+            )}
+        />
 
       </View>
     </>
@@ -38,20 +49,18 @@ const HomeNewScreen = ({navigation}) => {
 }
 
 const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
 
 const nextPageOptStyle = StyleSheet.create({
   width: screenWidth,
-  marginTop: screenHeight / 3,
-  paddingHorizontal: 20,
-  justifyContent:'space-between'
-
+  justifyContent:'space-between',
+  flexDirection:'row',
+  
 });
 
-const refreshBtnStyle = StyleSheet.create({
-  flexDirection: 'row',
-  justifyContent:'center',
-  paddingVertical: 10,
+const sideTitle = StyleSheet.create({
+  fontSize:20,
+  color: '#06901E',
+  marginVertical:10,
 });
 
 export default HomeNewScreen;

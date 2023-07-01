@@ -4,20 +4,30 @@ import {
   FlatList,
   View,
   TouchableHighlight,
-  StyleSheet
+  StyleSheet,
+  Dimensions,
+  StatusBar,
 } from 'react-native';
-
 import { useIsFocused } from "@react-navigation/native";
-
+import { faWallet, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons/';
 import Label from "./components/Label";
 import CarBillListItem from "./components/CarBillListItem";
 import CarBillService from "../service/CarBillService";
 import FloatBtn from "./components/FloatBtn";
 import Legend from "./components/Legend";
 import TitleLabel from "./components/TitleLabel";
+import Modal from "./components/Modal";
+import HeaderNavigator from "./components/HeaderNavigator";
+import Card from "./components/Card";
 
 const GarageScreen = ({navigation}) => {
   const [itens, setItens] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [filtered, setFiltered] = useState(false);
+  const [filterLbl, setFilterLbl] = useState('');
+  const [totalLbl, setTotalLbl] = useState([]);
+  const [totalFuelLbl, setTotalFuelLbl] = useState([]);
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -45,11 +55,11 @@ const GarageScreen = ({navigation}) => {
     return dt;
   }
 
-  const organizeItens = (itens) => {
-    if(itens && itens !== null && itens.length > 0){
-      let result = itens.reverse();
+  const organizeItens = (its) => {
+    if(its && its !== null && its.length > 0){
+      let result = its;
 
-      itens.sort((a, b) => {
+      result.sort((a, b) => {
         let da = toDate(a.date);
         let db = toDate(b.date);
 
@@ -62,79 +72,246 @@ const GarageScreen = ({navigation}) => {
         return 0;
       });
 
-      setItens(result)
+      setItens(result);
+      
+      setFiltered(false);
+    }
+  }
+
+  const filter = (car) => {
+    if(itens && itens !== null && itens.length > 0){
+      let ifd = itens.filter((i) => i.car === car);
+
+      setItens(ifd);
+      setFiltered(true);
+      setFilterLbl('Limpar filtro');
     }
   }
 
   const reset = () => {
     setItens([]);
+    setShowModal(false);
+    setFiltered(false);
+    setFilterLbl('Filtrar por carro');
   }
 
-  const loadWelcomeMsg = () => {
-    let hour = new Date().getHours();
+  const loadTotalMsg = () => {
+    let monthTotal = 0;
 
-    let msg = 'Boa noite!';
+    if(itens && itens !== null && itens.length > 0){
+      itens.map((i) => {
+        let dt = toDate(i.date);
 
-    if(hour > 5 || hour < 12)
-      msg = 'Bom dia!';
-    else if(hour > 12 || hour < 18)
-      msg = 'Boa tarde!';
+        let dtAtual = new Date();
 
-    return msg;
+        if(dt.getMonth() === dtAtual.getMonth()
+            && dt.getFullYear() === dtAtual.getFullYear()){
+      
+          monthTotal += parseFloat(i.value);
+        }
+      });    
+    }
+
+    return `R$ ${monthTotal}`;
+  }
+
+  const loadTotalFuelMsg = () => {
+    let fuelTotal = 0;
+
+    if(itens && itens !== null && itens.length > 0){
+      itens.map((i) => {
+        if(i.desc && i.desc !== null && i.desc.includes('ombust')){
+
+          let dt = toDate(i.date);
+
+          let dtAtual = new Date();
+
+          if(dt.getMonth() === dtAtual.getMonth() 
+              && dt.getFullYear() === dtAtual.getFullYear()){
+          
+            fuelTotal += parseFloat(i.value);
+          }
+        }
+      });
+    }
+
+    return `R$ ${fuelTotal}`;
+  }
+
+  const getModalOptions = () => {
+    let options = [];
+
+    if(itens && itens !== null && itens.length > 0){
+      itens.map((i) => {
+        if(options.indexOf(i.car) < 0)
+          options.push(i.car);
+      });
+    }
+
+    if(options.length > 0) {
+      return (
+        <View>
+          <FlatList 
+              data={options}
+              keyExtractor={(c, i) => c + i}
+              ListHeaderComponent={() => {
+                return (
+                  <View style={modalHeaderlbl}>
+                    <Label value='Selecione um carro:'/>
+                  </View>
+                )
+              }}
+              renderItem={({item}) => {
+
+                console.log(item);
+
+                return (
+                  <TouchableHighlight underlayColor='#e1fce8' 
+                      style={modalOption}
+                      onPress={() => onSelectOption(item)}>
+
+                    <Label value={item}/>
+                    
+                  </TouchableHighlight>
+                );
+              }}
+          />
+        </View>
+      );
+    } else {
+      return <></>
+    }
+  }
+
+  const onSelectOption = (option) => {
+    setShowModal(false);
+
+    filter(option);
   }
 
   return (
-    <View>
-      <FlatList
-        ListHeaderComponent={() => {
-          return (
-            <>
-              <View>
-                <TouchableHighlight underlayColor='#ddd' 
-                    onPress={() => navigation.navigate('Home')}>
+    <>
+      <StatusBar backgroundColor='#06901E'/>
 
-                  <Label value='Ir pra Carteira'/>
-                </TouchableHighlight>
-              </View>
+      <View style={bkg}>
+        <FlatList
+          ListHeaderComponent={() => {
+            return (
+              <>
+                <HeaderNavigator icon={faWallet} 
+                    navigation={navigation}
+                    action={() => navigation.navigate('Home')} />
 
-              <View>
-                <TitleLabel value={loadWelcomeMsg()}/>
-              </View>
+                <TitleLabel value='Garagem' customStyle={title}/>
+              
+                <View style={cardsWrap}>
+                  <Card content={(
+                      <View>
+                        <Label value={loadTotalMsg()} customStyle={costLbl}/>
+                        <Label value={'gastos este mês'} customStyle={costSubLbl}/>
+                      </View>
+                    )}
+                  />
+                
+                  <Card content={(
+                      <View>
+                        <Label value={loadTotalFuelMsg()} customStyle={costLbl}/>
+                        <Label value={'gastos com combustível este mês'} customStyle={costSubLbl}/>
+                      </View>
+                    )}
+                  />
+                </View>
+              
+                <View style={headerOptions}>
+                  <TouchableHighlight 
+                      underlayColor='#e1fce8'
+                      style={refreshBtnStyle}
+                      onPress={() => filtered ? init() : setShowModal(true)}>
+                    
+                    <Legend value={filterLbl}/>
+                  </TouchableHighlight>
 
-              <View>
-                <TouchableHighlight 
-                    underlayColor='#ddd'
-                    style={refreshBtnStyle}
-                    onPress={() => init()}>
-                  
-                  <Legend value='Atualizar lista'/>
-                </TouchableHighlight>
-              </View>
-            </>
-          );
-        }}
-        data={itens}
-        style={{marginBottom: 80}}
-        keyExtractor={(item) => item.id}
-        renderItem={({item}) => {
-          return (
-            <CarBillListItem bill={item} removable={true} 
-                  onRemove={() => init()}/>
-          );
-        }}
+                  <TouchableHighlight 
+                      underlayColor='#e1fce8'
+                      style={refreshBtnStyle}
+                      onPress={() => init()}>
+                    
+                    <Legend value='Atualizar'/>
+                  </TouchableHighlight>
+                </View>
+              </>
+            );
+          }}
+          data={itens}
+          style={{marginBottom: 80}}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => {
+            return (
+              <CarBillListItem bill={item} removable={true} 
+                    onRemove={() => init()}/>
+            );
+          }}
+        />
+
+        <FloatBtn icon={faScrewdriverWrench} label='Adicionar gasto com carro' 
+            action={() => navigation.navigate('AddCarBill')} 
+        />
+      </View>
+
+      <Modal isActive={showModal} onClose={() => setShowModal(!showModal)}
+          content={getModalOptions()}
       />
-
-      <FloatBtn label='Adicionar gasto com carro' 
-          action={() => navigation.navigate('AddCarBill')} 
-      />
-    </View>
+    </>
   );
 }
+
+const screenWidth = Dimensions.get('window').width;
+
+const title = StyleSheet.create({
+  textAlign:'center',
+  marginBottom:20
+});
 
 const refreshBtnStyle = StyleSheet.create({
   flexDirection: 'row',
   justifyContent:'center',
   paddingVertical: 10,
+});
+
+const bkg = StyleSheet.create({
+  backgroundColor:'#e8faed'
+});
+
+const cardsWrap = StyleSheet.create({
+  flexDirection:'row',
+  justifyContent:'space-between'
+});
+
+const costLbl = StyleSheet.create({
+  fontSize:24,
+  fontWeight:'bold',
+  textAlign:'center'
+});
+
+const costSubLbl = StyleSheet.create({
+  fontSize:12,
+  textAlign:'center'
+});
+
+const headerOptions = StyleSheet.create({
+  flexDirection:'row',
+  width:screenWidth,
+  paddingHorizontal:10,
+  justifyContent:'space-between'
+});
+
+const modalHeaderlbl = StyleSheet.create({
+  flexDirection:'row',
+  justifyContent:'center',
+});
+
+const modalOption = StyleSheet.create({
+  margin:10
 });
 
 export default GarageScreen;

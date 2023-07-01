@@ -7,26 +7,36 @@ import {
   Dimensions
 } from 'react-native';
 
-const BalanceCards = ({balance, totalBills}) => {
+import Card from './Card';
+
+const BalanceCards = ({balance=0, totalBills=0}) => {
+
+  const balanceColor = balance > 0 ? '#9df79c' : '#ffeed1';
+  const balanceFontColor = balance > 0 ? '#035c00' : '#f29c0f';
+
   return (
     <View style={cardWrapperStyle}>
-      <View style={cardStyle}>
-        <Text style={balanceStyle}>
-          Gastos totais
-        </Text>
-        <Text style={[balanceStyle, {fontWeight:'bold', color: 'red'}]}>
-          {`R$ ${totalBills && totalBills !== null ? totalBills : 0}`}
-        </Text>
-      </View>
+      <Card style={{backgroundColor:'#ffeed1'}} content={(
+          <View>
+            <Text style={[balanceStyle, {color:'#f29c0f'}]}>
+              {`R$ ${totalBills}`}
+            </Text>
 
-      <View style={cardStyle}>
-        <Text style={balanceStyle}>
-          Saldo
-        </Text>
-        <Text style={[balanceStyle, {fontWeight:'bold', color: balance && balance !== null && balance > 0 ? 'green' : 'red'}]}>
-          {`R$ ${balance && balance !== null ? balance : 0}`}
-        </Text>
-      </View>
+            <Text style={[balanceTitleStyle, {color:'#f29c0f'}]}>Gastos totais</Text>
+          </View>
+        )}
+      />
+
+      <Card style={{backgroundColor:balanceColor}} content={(
+          <View>
+            <Text style={[balanceStyle, {color: balanceFontColor}]}>
+              {`R$ ${balance}`}
+            </Text>
+
+            <Text style={[balanceTitleStyle, {color:balanceFontColor}]}>Saldo total</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -41,25 +51,18 @@ const cardWrapperStyle = StyleSheet.create({
   alignItens: 'center'
 });
 
-const cardStyle = StyleSheet.create({
-  width: (screenWidth / 2) - 20,
-  borderWidth:1,
-  borderColor:'#efefef',
-  borderRadius:10,
-  fontSize: 26,
-  paddingVertical: 20,
-  marginHorizontal: 10,
-  marginVertical: 20,
-  color: '#555',
-  justifyContent:'center',
-  alignItens: 'center',
-  backgroundColor:'#fafafa'
+const balanceStyle = StyleSheet.create({
+  fontSize: 24,
+  padding: 10,
+  textAlign:'center',
+  color:'#555',
+  fontWeight:'bold',
 });
 
-const balanceStyle = StyleSheet.create({
-  fontSize: 20,
+const balanceTitleStyle = StyleSheet.create({
+  fontSize: 14,
   padding: 10,
-  textAlign:'justify',
+  textAlign:'center',
   color:'#555',
 });
 

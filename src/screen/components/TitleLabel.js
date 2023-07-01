@@ -5,9 +5,9 @@ import {
   StyleSheet
 } from 'react-native';
 
-const TitleLabel = ({value}) => {
+const TitleLabel = ({value, customStyle={}}) => {
   return (
-    <Text style={style}>
+    <Text style={[style, customStyle]}>
       {value}
     </Text>
   );

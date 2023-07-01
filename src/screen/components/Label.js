@@ -14,7 +14,7 @@ const Label = ({value, customStyle}) => {
 };
 
 const style = StyleSheet.create({
-  fontSize: 18,
+  fontSize: 16,
   paddingHorizontal: 10,
   paddingTop: 10,
   paddingBottom: 5,
