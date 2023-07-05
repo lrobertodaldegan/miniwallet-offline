@@ -5,13 +5,16 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faGasPump, faTruckMonster, faScrewdriverWrench, faPlus } from "@fortawesome/free-solid-svg-icons";
 import FloatBtn from '../FloatBtn';
 import CarBillService from "../../../service/CarBillService";
+import Card from '../Card';
+import Legend from '../Legend';
 
 const CarBillForm = ({onSubmit}) => {
   const [car, setCar] = useState(null);
   const [desc, setDesc] = useState(null);
+  const [obs, setObs] = useState(null);
   const [value, setValue] = useState(null);
   const [day, setDay] = useState(null);
 
@@ -32,18 +35,29 @@ const CarBillForm = ({onSubmit}) => {
   return (
     <>
       <View style={styles.formStyle}>
+
+        <View style={styles.cardWrap}>
+          <Card action={() => setDesc('Combustível')}
+              style={[styles.cardOption, desc == 'Combustível' ? styles.cardSelected : {}]}
+              content={<Legend icon={faGasPump} value='Combustível' customStyle={{justifyContent:'center'}}/>}
+          />
+
+          <Card action={() => setDesc('Borracharia')}
+              style={[styles.cardOption, desc == 'Borracharia' ? styles.cardSelected : {}]}
+              content={<Legend icon={faTruckMonster} value='Borracharia' customStyle={{justifyContent:'center'}}/>}
+          />
+
+          <Card action={() => setDesc('Manutenção')}
+              style={[styles.cardOption, desc == 'Manutenção' ? styles.cardSelected : {}]}
+              content={<Legend icon={faScrewdriverWrench} value='Manutenção' customStyle={{justifyContent:'center'}}/>}
+          />
+        </View>
+
         <TextInput placeholder='Carro' 
             placeholderTextColor='#333'
             style={[styles.inputStyle, styles.inputHalf]}
             value={car} 
             onChangeText={setCar}
-        />
-
-        <TextInput placeholder='Item (Ex.: Combustível)' 
-            placeholderTextColor='#333'
-            style={[styles.inputStyle, styles.inputHalf]}
-            value={desc} 
-            onChangeText={setDesc}
         />
 
         <TextInput placeholder='Valor' 
@@ -59,6 +73,13 @@ const CarBillForm = ({onSubmit}) => {
             style={[styles.inputStyle, styles.inputHalf]}
             value={day} 
             onChangeText={setDay}
+        />
+
+        <TextInput placeholder='Observação' 
+            placeholderTextColor='#333'
+            style={[styles.inputStyle, styles.inputHalf]}
+            value={obs} 
+            onChangeText={setObs}
         />
       </View>
 
@@ -90,8 +111,17 @@ const styles = StyleSheet.create({
     backgroundColor:'#fafafa',
     
   },
-  inputHalf:{
-    
+  cardWrap:{
+    flexDirection:'row',
+    paddingHorizontal:10
+  },
+  cardOption: {
+    width:(screenWidth / 3) - 8,
+    marginHorizontal:2
+  },
+  cardSelected: {
+    borderWidth:5,
+    borderColor: '#9df79c',
   },
   modalHeaderlbl:{
     flexDirection:'row',

@@ -66,10 +66,9 @@ const FixBillForm = ({onSubmit=()=>null}) => {
             style={[styles.card, type == IN ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
-                <FontAwesomeIcon icon={faArrowTrendUp} size={15} 
-                    style={[styles.cardLblIcon, {color:'green'}]}
-                />
-                <Legend customStyle={styles.cardLbl} value={'Entrada fixa'} />
+                <Legend icon={faArrowTrendUp} iconSize={15}
+                    iconStyle={[styles.cardLblIcon, {color:'green'}]} 
+                    customStyle={styles.cardLbl} value={'Entrada fixa'} />
               </View>
             } 
         />
@@ -78,10 +77,9 @@ const FixBillForm = ({onSubmit=()=>null}) => {
             style={[styles.card, type == OUT ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
-                <FontAwesomeIcon icon={faArrowTrendDown} size={15} 
-                    style={[styles.cardLblIcon, {color:'orange'}]}
-                />
-                <Legend customStyle={styles.cardLbl} value={'Saída fixa'} />
+                <Legend icon={faArrowTrendDown} iconSize={15}
+                    iconStyle={[styles.cardLblIcon, {color:'orange'}]}
+                    customStyle={styles.cardLbl} value={'Saída fixa'} />
               </View>
             } 
         />

@@ -20,7 +20,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[0]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[0]} />
               </View>
             } 
         />
@@ -33,7 +33,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[1]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[1]} />
               </View>
             } 
         />
@@ -46,7 +46,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[2]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[2]} />
               </View>
             } 
         />
@@ -59,7 +59,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[3]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[3]} />
               </View>
             } 
         />
@@ -74,7 +74,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[4]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[4]} />
               </View>
             } 
         />
@@ -87,7 +87,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[5]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[5]} />
               </View>
             } 
         />
@@ -100,7 +100,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[6]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[6]} />
               </View>
             } 
         />
@@ -113,7 +113,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[7]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[7]} />
               </View>
             } 
         />
@@ -128,7 +128,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[8]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[8]} />
               </View>
             } 
         />
@@ -141,7 +141,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[9]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[9]} />
               </View>
             } 
         />
@@ -154,7 +154,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[10]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[10]} />
               </View>
             } 
         />
@@ -167,7 +167,7 @@ const MonthCards = ({refMonth, action}) => {
             ]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend customStyle={styles.cardLbl} value={Months.names[11]} />
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[11]} />
               </View>
             } 
         />

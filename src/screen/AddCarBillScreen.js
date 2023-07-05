@@ -18,7 +18,7 @@ const AddCarBillScreen = ({navigation}) => {
 
       <HeaderNavigator icon={faWarehouse} 
                     navigation={navigation}
-                    action={() => navigation.navigate('Home')} />
+                    action={() => navigation.navigate('Garage')} />
 
       <CarBillForm onSubmit={() => navigation.navigate('Garage')}/>
     </>

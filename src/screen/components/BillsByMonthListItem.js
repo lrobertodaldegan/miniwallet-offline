@@ -1,34 +1,26 @@
-import React, {useState} from "react";
-
+import React, {useState, useEffect} from "react";
 import {
   View,
   StyleSheet,
   TouchableHighlight,
   FlatList,
 } from 'react-native';
-
 import SubTitleLabel from './SubTitleLabel';
 import Legend from './Legend';
 import BillListItem from "./BillListItem";
 import Hr from "./Hr";
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-
 const BillsByMonthListItem = ({month, balance=0, bills}) => {
   const [hide, setHide] = useState(true);
+  const [itens, setItens] = useState([]);
+
+  useEffect(() => {
+    setItens(bills);
+  }, []);
 
   const removeHandler = (bill) => {
     try{
-      const key = getBillMapKey(bill);
-
-      let itens = mapItensByMonth.get(key);
-      
-      itens.splice(itens.indexOf(bill), 1);
-      
-      setMapItensByMonth(itens);
-
-      navigation.navigate('Home');
+      setItens(itens.splice(itens.indexOf(bill), 1));
     }catch(e){
       console.log(e);
     }
@@ -45,7 +37,7 @@ const BillsByMonthListItem = ({month, balance=0, bills}) => {
             <SubTitleLabel customStyle={btnLblStyle} 
                 value={`${month}`}/>
             
-            <Legend customStyle={{color:'#555'}} 
+            <Legend icon={null} customStyle={{color:'#555'}} 
                 value={` (Saldo: R$ ${balance})`}/>
           </View>
         </TouchableHighlight>

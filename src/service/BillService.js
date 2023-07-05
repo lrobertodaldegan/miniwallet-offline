@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Months from "./Months";
 
 const FIXA = 'Fixa';
 
@@ -52,8 +53,11 @@ const getAll = async () => {
 
 const getPaymentStatus = async (billId, month, fullYear) => {
   try{
-    let billStat = await AsyncStorage
-                      .getItem(`${paymentKeyPrefix + month}_${fullYear}_${billId}`);
+    let d = new Date();
+    let m = !month || month == null ? Months.names[d.getMonth()] : month;
+    let y = !fullYear || fullYear == null ? d.getFullYear() : fullYear;
+
+    let billStat = await AsyncStorage.getItem(`${paymentKeyPrefix + m}_${y}_${billId}`);
 
     return billStat && billStat != null ? BillStatus.OK : BillStatus.PAGAR;
   } catch(e){

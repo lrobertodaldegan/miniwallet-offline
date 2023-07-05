@@ -8,7 +8,7 @@ import {
   StatusBar
 } from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
-import { faWarehouse, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faWarehouse, faCalculator, faCalendar, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import BalanceCards from "./components/BalanceCards";
 import FloatBtn from './components/FloatBtn';
 import TitleLabel from './components/TitleLabel';
@@ -86,7 +86,7 @@ const HomeScreen = ({navigation}) => {
     }
 
     BillService.getByMonthAndYear(m, a)
-                .then((result) => {setItens(result); loadBoard(result);})
+                .then((result) => {console.log(result); setItens(result); loadBoard(result);})
                 .catch((e) => console.log(e));
   }
 
@@ -188,7 +188,7 @@ const HomeScreen = ({navigation}) => {
                       underlayColor='#e1fce8'
                       onPress={() => setShowModal(!showModal)}>
                     
-                    <Legend style={loLblStyle} 
+                    <Legend icon={faCalendarCheck} style={loLblStyle} 
                         value={`${getMonthLegendLabel()}`}/>
 
                   </TouchableHighlight>
@@ -198,7 +198,7 @@ const HomeScreen = ({navigation}) => {
                       style={loBtnStyle}
                       onPress={() => navigation.navigate('Bills')}>
                     
-                    <Legend value='Ver todos os meses'/>
+                    <Legend icon={faCalendar} value='Ver todos os meses'/>
 
                   </TouchableHighlight>
                 </View>

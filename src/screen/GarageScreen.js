@@ -9,7 +9,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
-import { faWallet, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons/';
+import { faWallet, faScrewdriverWrench, faCarSide } from '@fortawesome/free-solid-svg-icons/';
 import Label from "./components/Label";
 import CarBillListItem from "./components/CarBillListItem";
 import CarBillService from "../service/CarBillService";
@@ -228,7 +228,7 @@ const GarageScreen = ({navigation}) => {
                       style={refreshBtnStyle}
                       onPress={() => filtered ? init() : setShowModal(true)}>
                     
-                    <Legend value={filterLbl}/>
+                    <Legend icon={faCarSide} value={filterLbl}/>
                   </TouchableHighlight>
 
                   <TouchableHighlight 

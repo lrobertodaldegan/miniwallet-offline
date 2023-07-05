@@ -17,7 +17,7 @@ const YearCards = ({refYear, action}) => {
           ]}
           content={
             <View style={styles.cardLblWrap}>
-              <Legend customStyle={styles.cardLbl} value={new Date().getFullYear() - 1} />
+              <Legend icon={null}customStyle={styles.cardLbl} value={new Date().getFullYear() - 1} />
             </View>
           } 
       />
@@ -29,7 +29,7 @@ const YearCards = ({refYear, action}) => {
           ]}
           content={
             <View style={styles.cardLblWrap}>
-              <Legend customStyle={styles.cardLbl} value={new Date().getFullYear()} />
+              <Legend icon={null}customStyle={styles.cardLbl} value={new Date().getFullYear()} />
             </View>
           } 
       />
@@ -41,7 +41,7 @@ const YearCards = ({refYear, action}) => {
           ]}
           content={
             <View style={styles.cardLblWrap}>
-              <Legend customStyle={styles.cardLbl} value={new Date().getFullYear() + 1} />
+              <Legend icon={null}customStyle={styles.cardLbl} value={new Date().getFullYear() + 1} />
             </View>
           } 
       />

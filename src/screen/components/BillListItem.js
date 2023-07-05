@@ -63,8 +63,7 @@ const BillListItem = ({bill, removable=false, onRemove=()=>null, onUpdateBillSta
               onPress={() => remove(bill)}>
 
           <View style={{flexDirection:'row'}}>
-            <FontAwesomeIcon icon={faTrash} size={10} style={iconStyle}/>
-            <Legend customStyle={{color:'#e8faed'}} value='Apagar' />
+            <Legend icon={faTrash} iconStyle={iconStyle} lblStyle={{color:'#e8faed'}} value='Apagar' />
           </View>
           
         </TouchableHighlight>
@@ -111,7 +110,7 @@ const BillListItem = ({bill, removable=false, onRemove=()=>null, onUpdateBillSta
       <View style={[listItemStyle, getBkgItemColor()]}>
         <View style={liLeftStyle}>
           <View style={liHeaderStyle}>
-            <Legend value={`${bill.desc} - ${bill.cat}`} />
+            <Legend icon={null} value={`${bill.desc} - ${bill.cat}`} />
 
             <FontAwesomeIcon icon={bill.type == IN ? faArrowTrendUp : faArrowTrendDown} 
                 size={12}

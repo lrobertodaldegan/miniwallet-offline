@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import {
   View,
@@ -6,16 +6,14 @@ import {
   Dimensions,
   TouchableHighlight,
 } from 'react-native';
-
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-
+import { faTrash, faCalendar, faGasPump, faTruckMonster, faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
 import SubTitleLabel from './SubTitleLabel';
 import Label from './Label';
 import Legend from './Legend';
 import CarBillService from "../../service/CarBillService";
 
-const CarBillListItem = ({bill, removable, onRemove}) => {
+const CarBillListItem = ({bill, removable=false, onRemove}) => {
+  const [showDetails, setShowDetails] = useState(false);
 
   const remove = (bill) => {
     if(removable === true){
@@ -32,10 +30,9 @@ const CarBillListItem = ({bill, removable, onRemove}) => {
               underlayColor='#e1fce8'
               onPress={() => remove(bill)}>
 
-          <View style={{flexDirection:'row'}}>
-            <FontAwesomeIcon icon={faTrash} size={10} style={iconStyle}/>
-            <Legend customStyle={{color:'#e8faed'}} value='Apagar' />
-          </View>
+          <Legend icon={faTrash} iconStyle={iconStyle} iconSize={10} 
+              lblStyle={{color:'#e8faed'}} value='Apagar' 
+          />
           
         </TouchableHighlight>
       );  
@@ -44,23 +41,49 @@ const CarBillListItem = ({bill, removable, onRemove}) => {
     return <></>;
   }
 
+  const loadDetails = () => {
+    if(showDetails){
+      return (<Legend value={`Detalhes: ${bill.obs && bill.obs != null ? bill.obs : 'N/A'}`} 
+                  icon={null} customStyle={detailsStyle}/>);
+    }
+
+    return <></>;
+  }
+
+  const loadDescIcon = () => {
+    if('Combustível' == bill.desc)
+      return faGasPump;
+
+    if('Borracharia' == bill.desc)
+      return faTruckMonster;
+
+    return faScrewdriverWrench;
+  }
+
   return (
     <View>
-      <View style={listItemStyle}>
-        <View style={liLeftStyle}>
-          <View style={liHeaderStyle}>
-            <Legend value={`${bill.date} - `} />
-            <Legend value={bill.desc} />
+      <TouchableHighlight style={listItemStyle}
+          underlayColor='#e1fce8'
+          onPress={() => setShowDetails(!showDetails)}>
+
+        <>
+          <View style={liLeftStyle}>
+            <View style={liHeaderStyle}>
+              <Legend icon={faCalendar} value={`${bill.date} - `} />
+              <Legend icon={loadDescIcon()}value={bill.desc} />
+            </View>
+
+            <SubTitleLabel customStyle={{fontWeight:'bold'}} value={`R$ ${bill.value}`} />
           </View>
 
-          <SubTitleLabel customStyle={{fontWeight:'bold'}} value={`R$ ${bill.value}`} />
-        </View>
+          <TouchableHighlight style={liRightStyle} 
+              underlayColor='#e1fce8'>
+            <Label value={bill.car} />
+          </TouchableHighlight>
+        </>
+      </TouchableHighlight>
 
-        <TouchableHighlight style={liRightStyle} 
-            underlayColor='#e1fce8'>
-          <Label value={bill.car} />
-        </TouchableHighlight>
-      </View>
+      {loadDetails()}
 
       {loadRemoveOption()}
     </View>
@@ -74,12 +97,18 @@ const listItemStyle = StyleSheet.create({
   marginTop: 5,
   marginBottom: 1,
   marginHorizontal:10,
-  paddingHorizontal: 30,
+  paddingHorizontal: 10,
   paddingVertical: 20,
   borderTopLeftRadius: 10,
   borderTopRightRadius: 10,
   borderColor:'#efefef',
   backgroundColor: '#fafafa',
+});
+
+const detailsStyle = StyleSheet.create({
+  backgroundColor: '#fafafa',
+  paddingHorizontal: 10,
+  marginHorizontal:10,
 });
 
 const liHeaderStyle = StyleSheet.create({
