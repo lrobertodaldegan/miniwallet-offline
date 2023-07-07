@@ -15,31 +15,46 @@ import {
 import SubTitleLabel from './SubTitleLabel';
 import Legend from './Legend';
 import BillService from "../../service/BillService";
+import Months from "../../service/Months";
 
 const IN = 'IN';
 const OK = 'OK';
 const PAGAR = 'PAGAR';
 
-const BillListItem = ({bill, removable=false, onRemove=()=>null, onUpdateBillStatus=()=>null}) => {
+const BillListItem = ({
+    bill, 
+    refMonth=Months.names[(new Date()).getMonth()],
+    refYear=(new Date()).getFullYear(),
+    removable=false, 
+    onRemove=()=>null, 
+    onUpdateBillStatus=()=>null}) => {
+
   const [statusLbl, setStatusLbl] = useState(null);
 
-  useEffect(() => {
-    BillService.getStatus(bill.id, bill.refMonth, bill.refYear)
+  const init = () => {
+    let m = !bill.refMonth || bill.refMonth == null ? refMonth : bill.refMonth;
+    let y = !bill.refYear || bill.refYear == null ? refYear : bill.refYear;
+
+    BillService.getStatus(bill.id, m, y)
                 .then((sts) => setStatusLbl(sts))
                 .catch((e) => console.log(e));
-  }, []);
+  }
 
   const updateBillStatus = () => {
     if(bill.type != IN){
+
+      let m = !bill.refMonth || bill.refMonth == null ? refMonth : bill.refMonth;
+      let y = !bill.refYear || bill.refYear == null ? refYear : bill.refYear;
+
       if(statusLbl == PAGAR){
         setStatusLbl(OK);
 
-        BillService.payAntecipate(bill.id, bill.refMonth, bill.refYear)
+        BillService.payAntecipate(bill.id, m, y)
                     .catch((e) => console.log(e));
       } else {
         setStatusLbl(PAGAR);
 
-        BillService.unpayAntecipate(bill.id, bill.refMonth, bill.refYear)
+        BillService.unpayAntecipate(bill.id, m, y)
                     .catch((e) => console.log(e));
       }
 
@@ -104,6 +119,8 @@ const BillListItem = ({bill, removable=false, onRemove=()=>null, onUpdateBillSta
 
     return yellow;
   }
+
+  init();
 
   return (
     <View>

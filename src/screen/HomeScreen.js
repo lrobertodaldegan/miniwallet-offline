@@ -26,27 +26,25 @@ const OUT = 'OUT';
 
 const PAGAR = 'PAGAR';
 
-const TODAY = new Date();
-
 const MODAL_OPTIONS = [
   {
-    dt:new Date(TODAY.getFullYear(), TODAY.getMonth() - 1, 10), 
-    lbl: `${Months.names[TODAY.getMonth() - 1]}/${TODAY.getFullYear()}`,
+    dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 10), 
+    lbl: `${Months.names[(new Date()).getMonth() - 1]}/${(new Date()).getFullYear()}`,
     bold:false
   },
   {
-    dt:new Date(TODAY.getFullYear(), TODAY.getMonth(), 10), 
-    lbl: `${Months.names[TODAY.getMonth()]}/${TODAY.getFullYear()}`,
+    dt:new Date((new Date()).getFullYear(), (new Date()).getMonth(), 10), 
+    lbl: `${Months.names[(new Date()).getMonth()]}/${(new Date()).getFullYear()}`,
     bold:true
   },
   {
-    dt:new Date(TODAY.getFullYear(), TODAY.getMonth() + 1, 10), 
-    lbl: `${Months.names[TODAY.getMonth() + 1]}/${TODAY.getFullYear()}`,
+    dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() + 1, 10), 
+    lbl: `${Months.names[(new Date()).getMonth() + 1]}/${(new Date()).getFullYear()}`,
     bold:false
   },
   {
-    dt:new Date(TODAY.getFullYear(), TODAY.getMonth() + 2, 10), 
-    lbl: `${Months.names[TODAY.getMonth() + 2]}/${TODAY.getFullYear()}`,
+    dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() + 2, 10), 
+    lbl: `${Months.names[(new Date()).getMonth() + 2]}/${(new Date()).getFullYear()}`,
     bold:false
   },
 ]
@@ -86,7 +84,10 @@ const HomeScreen = ({navigation}) => {
     }
 
     BillService.getByMonthAndYear(m, a)
-                .then((result) => {console.log(result); setItens(result); loadBoard(result);})
+                .then((result) => {
+                  setItens(result); 
+                  loadBoard(result);
+                })
                 .catch((e) => console.log(e));
   }
 
@@ -208,7 +209,13 @@ const HomeScreen = ({navigation}) => {
           data={itens}
           style={{marginBottom: 80}}
           keyExtractor={(item) => item.id}
-          renderItem={({item}) => <BillListItem bill={item} onUpdateBillStatus={() => update()}/>}
+          renderItem={({item}) => 
+            <BillListItem bill={item} 
+                refMonth={Months.names[d.getMonth()]} 
+                refYear={d.getFullYear()}
+                onUpdateBillStatus={() => update()}
+            />
+          }
         />
 
         <FloatBtn icon={faCalculator} label='Adicionar conta ou gasto' 
