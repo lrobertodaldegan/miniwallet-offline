@@ -14,11 +14,12 @@ const TitleLabel = ({value, customStyle={}}) => {
 };
 
 const style = StyleSheet.create({
-  fontSize: 26,
+  fontSize: 30,
   paddingHorizontal: 20,
   paddingTop: 30,
   paddingBottom: 5,
-  color: '#555'
+  color: '#555',
+  fontFamily: 'Montserrat-Regular',
 });
 
 export default TitleLabel;

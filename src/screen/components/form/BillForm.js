@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
     marginHorizontal:10,
     marginTop:5,
     padding: 10,
-    backgroundColor:'#fafafa'
+    backgroundColor:'#fafafa',
+    fontFamily: 'Montserrat-Regular',
   },
   modalHeaderlbl:{
     flexDirection:'row',

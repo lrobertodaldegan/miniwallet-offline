@@ -48,7 +48,8 @@ const cardWrapperStyle = StyleSheet.create({
   flexDirection:'row',
   flexWrap: "wrap",
   justifyContent:'center',
-  alignItens: 'center'
+  alignItens: 'center',
+  fontFamily: 'Montserrat-Regular',
 });
 
 const balanceStyle = StyleSheet.create({
@@ -56,7 +57,7 @@ const balanceStyle = StyleSheet.create({
   padding: 10,
   textAlign:'center',
   color:'#555',
-  fontWeight:'bold',
+  fontFamily: 'Montserrat-Bold',
 });
 
 const balanceTitleStyle = StyleSheet.create({
@@ -64,6 +65,7 @@ const balanceTitleStyle = StyleSheet.create({
   padding: 10,
   textAlign:'center',
   color:'#555',
+  fontFamily: 'Montserrat-Regular',
 });
 
 export default BalanceCards;

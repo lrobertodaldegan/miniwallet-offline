@@ -1,4 +1,4 @@
-import React, {useState}from 'react';
+import React, {useState, useEffect}from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -17,6 +17,21 @@ const CarBillForm = ({onSubmit}) => {
   const [obs, setObs] = useState(null);
   const [value, setValue] = useState(null);
   const [day, setDay] = useState(null);
+
+  useEffect(() =>{
+    let dt = new Date();
+    let d  = dt.getDate();
+    let m  = dt.getMonth() + 1;
+    let y  = dt.getFullYear();
+
+    if(d < 10)
+      d = `0${d}`;
+
+    if(m < 10)
+      m = `0${m}`;
+    
+    setDay(`${d}/${m}/${y}`);
+  }, []);
 
   const save = () => {
     let carBill = {
@@ -109,7 +124,7 @@ const styles = StyleSheet.create({
     marginTop:5,
     padding: 10,
     backgroundColor:'#fafafa',
-    
+    fontFamily: 'Montserrat-Regular',
   },
   cardWrap:{
     flexDirection:'row',

@@ -18,7 +18,8 @@ const style = StyleSheet.create({
   paddingHorizontal: 10,
   paddingTop: 10,
   paddingBottom: 5,
-  color: '#555'
+  color: '#555',
+  fontFamily: 'Montserrat-Regular',
 });
 
 export default Label;

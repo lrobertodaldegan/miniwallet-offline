@@ -17,7 +17,7 @@ const style = StyleSheet.create({
   fontSize: 22,
   padding: 10,
   color: '#777',
-  fontWeight:'bold'
+  fontFamily: 'Montserrat-Bold',
 });
 
 export default SubTitleLabel;

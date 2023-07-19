@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
   lblStyle: {
     color: '#fff',
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Montserrat-Regular',
   },
   lblWrap: {
     flexDirection:'row',

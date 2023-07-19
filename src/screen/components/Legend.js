@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 2,
     paddingVertical: 2,
-    color: '#555'
+    color: '#555',
+    fontFamily: 'Montserrat-Regular',
   },
   icon: {
     color:'#555',

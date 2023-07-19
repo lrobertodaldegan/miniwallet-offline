@@ -10,7 +10,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircle} from '@fortawesome/free-solid-svg-icons';
 
-const Btn = ({label, icon=null, customStyle={}, action}) => {
+const Btn = ({label, icon=null, iconSize=15, customStyle={}, lblColor='#fafafa', action=()=>null}) => {
 
 
   return (
@@ -19,10 +19,10 @@ const Btn = ({label, icon=null, customStyle={}, action}) => {
           
       <View style={styles.lblWrap}>
         <FontAwesomeIcon icon={icon !== null ? icon : faCircle} 
-            style={[styles.iconStyle, icon !== null ? {} : {marginTop:10}]}
-            size={icon !== null ? 15 : 5} 
+            style={[styles.iconStyle, icon !== null ? {} : {marginTop:10}, {color:lblColor}]}
+            size={icon !== null ? iconSize : 5} 
         />
-        <Text style={styles.lblStyle}>{label}</Text>
+        <Text style={[styles.lblStyle, {color:lblColor}]}>{label}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     borderRadius:10
   },
   lblStyle: {
-    color: '#fff',
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Montserrat-Regular',
   },
   lblWrap: {
     flexDirection:'row',
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginTop:5,
     marginRight:10,
-    color:'#fff'
   }
 });
 

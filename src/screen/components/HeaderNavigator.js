@@ -15,7 +15,7 @@ const HeaderNavigator = ({icon, navigation, action}) => {
   return (
     <View style={headerNavigatorWrap}>
       <TouchableHighlight 
-          underlayColor='#e1fce8' 
+          underlayColor='#06901E' 
           style={headerBtnWrap}
           onPress={() => navigation.goBack()}>
 
@@ -26,7 +26,7 @@ const HeaderNavigator = ({icon, navigation, action}) => {
         </View>
       </TouchableHighlight>
 
-      <TouchableHighlight underlayColor='#e1fce8' 
+      <TouchableHighlight underlayColor='#06901E' 
       style={headerBtnWrap}
           onPress={() => action()}>
 
