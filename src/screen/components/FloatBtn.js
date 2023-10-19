@@ -14,7 +14,7 @@ import { faCircle} from '@fortawesome/free-solid-svg-icons';
 const FloatBtn = ({label, icon=null, customStyle={}, action}) => {
   return (
     <TouchableHighlight style={[styles.btnStyle, customStyle]} 
-        underlayColor='#e1fce8' 
+        underlayColor='transparent' 
         onPress={() => action()}>
 
       <View style={styles.lblWrap}>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     position:'absolute',
     width: screenWidth - 20,
-    backgroundColor: '#06901E',
+    backgroundColor: '#000',
   },
   lblStyle: {
     color: '#fff',

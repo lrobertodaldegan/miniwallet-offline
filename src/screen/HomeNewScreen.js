@@ -1,54 +1,118 @@
+import {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
   Dimensions,
   StatusBar,
-  Text,
+  TouchableHighlight,
 } from 'react-native';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faWarehouse } from '@fortawesome/free-solid-svg-icons/faWarehouse';
-import { faWallet } from '@fortawesome/free-solid-svg-icons/faWallet';
+import { faWallet, faWarehouse } from '@fortawesome/free-solid-svg-icons';
 
-import Side from './components/Side';
 import TitleLabel from './components/TitleLabel';
 import Label from './components/Label';
 import Btn from './components/Btn';
-
-const ICON_SIZE = 30;
+import mobileAds, { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720~7808361383';
 
 const HomeNewScreen = ({navigation}) => {
+  const [title, setTitle] = useState('Miniwallet');
+
+  mobileAds().initialize();
+
   return (
     <>
-      <StatusBar backgroundColor='#06901E'/>
+      <StatusBar barStyle='dark-content' backgroundColor='#d9dae1'/>
 
-      <View style={nextPageOptStyle}>
-        <TitleLabel value='Bem-vindo!' customStyle={title}/>
-
-        <Label value='Ir para:' customStyle={[lbl, {marginBottom:20}]}/>
-
-        <View style={btnWrap}>
-          <Btn action={() => navigation.navigate('Home')} 
-              label='Carteira' icon={faWallet} iconSize={20}
-              customStyle={[btnStyle, {backgroundColor:'#c9ffd3'}]} lblColor='#06901E'
+      <View style={styles.nextPageOptStyle} >
+        <View style={styles.ad}>
+          <BannerAd
+              unitId={adUnitId}
+              size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: false,
+              }}
           />
         </View>
 
-        <Label value='ou' customStyle={[lbl, {textAlign:'center', marginVertical:20}]}/>
+        <TitleLabel value={title} customStyle={styles.title}/>
+        
+        <TouchableHighlight underlayColor='transparent' onPress={() => navigation.navigate('Home')}>
+          <View style={styles.card} elevation={10}>
+            <Btn action={() => navigation.navigate('Home')} 
+                label='Carteira' icon={faWallet} iconSize={20}
+                customStyle={[styles.btnStyle2]} lblColor='#000'
+            />
 
-        <View style={btnWrap}>
-          <Btn action={() => navigation.navigate('Garage')} 
-              label='Garagem' icon={faWarehouse} iconSize={20}
-              customStyle={[btnStyle, {backgroundColor:'#c9ffd3'}]} lblColor='#06901E'
-          />
-        </View>
+            <Label value={'Aqui você gerencia sua carteira de gastos gerais'}
+                customStyle={styles.lbl}
+            />
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight underlayColor='transparent' onPress={() => navigation.navigate('Garage')}>
+          <View style={styles.card} elevation={10}>
+            <Btn action={() => navigation.navigate('Garage')} 
+                label='Garagem' icon={faWarehouse} iconSize={20}
+                customStyle={[styles.btnStyle2]} lblColor='#000'
+            />
+
+            <Label value={'Aqui você gerencia sua carteira de gastos gerais'}
+                customStyle={styles.lbl}
+            />
+          </View>
+        </TouchableHighlight>
       </View>
     </>
   );
 }
 
 const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const screenHeight = Dimensions.get('screen').height;
+
+const styles = StyleSheet.create({
+  nextPageOptStyle:{
+    width: screenWidth,
+    height:screenHeight,
+    backgroundColor:'#d9dae1',
+    paddingHorizontal:10,
+    
+  },
+  title:{
+    color: '#000',
+    textAlign:'center',
+    marginTop:80,
+    marginBottom: screenHeight / 11,
+  },
+  lbl:{
+    color: '#333',
+    marginLeft: 45,
+    marginBottom: 30,
+    fontSize:14
+  },
+  card:{
+    marginTop:40,
+    backgroundColor:'#fff',
+    borderRadius:10,
+    width:screenWidth - 40,
+    marginLeft:10,
+  },
+  btnWrap:{
+    justifyContent:'center',
+    marginVertical:20,
+    
+  },
+  btnStyle:{
+    width:screenWidth / 2.5
+  },
+  btnStyle2:{
+    width:screenWidth / 2.5,
+    backgroundColor:'#fff'
+  },
+  ad:{
+    alignItems:'center',
+  },
+});
 
 const nextPageOptStyle = StyleSheet.create({
   width: screenWidth,
@@ -59,7 +123,7 @@ const nextPageOptStyle = StyleSheet.create({
 
 const title = StyleSheet.create({
   color: '#fafafa',
-  marginTop:screenWidth / 2.5
+  marginTop:screenWidth / 8
 });
 
 const lbl = StyleSheet.create({

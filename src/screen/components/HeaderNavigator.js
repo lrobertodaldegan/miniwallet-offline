@@ -13,9 +13,9 @@ import Label from './Label';
 
 const HeaderNavigator = ({icon, navigation, action}) => {
   return (
-    <View style={headerNavigatorWrap}>
+    <View style={headerNavigatorWrap} elevation={10}>
       <TouchableHighlight 
-          underlayColor='#06901E' 
+          underlayColor='transparent' 
           style={headerBtnWrap}
           onPress={() => navigation.goBack()}>
 
@@ -26,7 +26,7 @@ const HeaderNavigator = ({icon, navigation, action}) => {
         </View>
       </TouchableHighlight>
 
-      <TouchableHighlight underlayColor='#06901E' 
+      <TouchableHighlight underlayColor='transparent' 
       style={headerBtnWrap}
           onPress={() => action()}>
 
@@ -47,12 +47,12 @@ const headerNavigatorWrap = StyleSheet.create({
   paddingTop:20,
   paddingHorizontal: 20,
   paddingBottom: 20,
-  backgroundColor:'#06901E',
+  backgroundColor:'#fff',
   borderBottomLeftRadius:30
 });
 
 const iconStyle = StyleSheet.create({
-  color:'#62a86e',
+  color:'#000',
   marginTop:13.5,
 });
 
@@ -67,7 +67,7 @@ const headerBtn = StyleSheet.create({
 });
 
 const lbl = StyleSheet.create({
-  color:'#bcffb8'
+  color:'#000'
 });
 
 export default HeaderNavigator;

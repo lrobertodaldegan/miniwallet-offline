@@ -156,7 +156,8 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <>
-      <StatusBar backgroundColor='#06901E'/>
+      <StatusBar barStyle='dark-content' backgroundColor='#fff'/>
+
       <View style={bkg}>
         <FlatList
           ListHeaderComponent={() => {
@@ -177,7 +178,7 @@ const HomeScreen = ({navigation}) => {
                 <TitleLabel value='Contas e gastos' customStyle={title}/>
 
                 <TouchableHighlight 
-                    underlayColor='#e1fce8'
+                    underlayColor='transparent'
                     style={refreshBtnStyle}
                     onPress={() => update()}>
                   
@@ -186,7 +187,7 @@ const HomeScreen = ({navigation}) => {
 
                 <View style={listOptionsStyle}>
                   <TouchableHighlight 
-                      underlayColor='#e1fce8'
+                      underlayColor='transparent'
                       onPress={() => setShowModal(!showModal)}>
                     
                     <Legend icon={faCalendarCheck} style={loLblStyle} 
@@ -195,7 +196,7 @@ const HomeScreen = ({navigation}) => {
                   </TouchableHighlight>
 
                   <TouchableHighlight 
-                      underlayColor='#e1fce8'
+                      underlayColor='transparent'
                       style={loBtnStyle}
                       onPress={() => navigation.navigate('Bills')}>
                     
@@ -257,9 +258,11 @@ const HomeScreen = ({navigation}) => {
 }
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 const title = StyleSheet.create({
   textAlign:'center',
+  color:'#000'
 });
 
 const listOptionsStyle = StyleSheet.create({
@@ -289,7 +292,8 @@ const refreshBtnStyle = StyleSheet.create({
 });
 
 const bkg = StyleSheet.create({
-  backgroundColor:'#e8faed'
+  backgroundColor:'#f7f7f7',
+  height:screenHeight
 });
 
 const headerOptions = StyleSheet.create({

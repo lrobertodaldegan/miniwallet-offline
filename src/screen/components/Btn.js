@@ -14,7 +14,7 @@ const Btn = ({label, icon=null, iconSize=15, customStyle={}, lblColor='#fafafa',
 
 
   return (
-    <TouchableHighlight underlayColor='#e1fce8' 
+    <TouchableHighlight underlayColor='transparent' 
         style={[styles.btnStyle, customStyle]} onPress={() => action()}>
           
       <View style={styles.lblWrap}>
