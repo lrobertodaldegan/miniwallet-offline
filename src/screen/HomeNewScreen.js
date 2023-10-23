@@ -22,7 +22,7 @@ const HomeNewScreen = ({navigation}) => {
 
   return (
     <>
-      <StatusBar barStyle='dark-content' backgroundColor='#d9dae1'/>
+      <StatusBar barStyle='dark-content' backgroundColor='#f7f7f7'/>
 
       <View style={styles.nextPageOptStyle} >
         <View style={styles.ad}>
@@ -38,10 +38,10 @@ const HomeNewScreen = ({navigation}) => {
         <TitleLabel value={title} customStyle={styles.title}/>
         
         <TouchableHighlight underlayColor='transparent' onPress={() => navigation.navigate('Home')}>
-          <View style={styles.card} elevation={10}>
+          <View style={styles.card} elevation={5}>
             <Btn action={() => navigation.navigate('Home')} 
                 label='Carteira' icon={faWallet} iconSize={20}
-                customStyle={[styles.btnStyle2]} lblColor='#000'
+                customStyle={[styles.btnStyle2]} lblColor='#fff'
             />
 
             <Label value={'Aqui você gerencia sua carteira de gastos gerais'}
@@ -51,17 +51,21 @@ const HomeNewScreen = ({navigation}) => {
         </TouchableHighlight>
 
         <TouchableHighlight underlayColor='transparent' onPress={() => navigation.navigate('Garage')}>
-          <View style={styles.card} elevation={10}>
+          <View style={[styles.card,styles.cardRight]} elevation={5}>
             <Btn action={() => navigation.navigate('Garage')} 
                 label='Garagem' icon={faWarehouse} iconSize={20}
-                customStyle={[styles.btnStyle2]} lblColor='#000'
+                customStyle={[styles.btnStyle2]} lblColor='#fff'
             />
 
-            <Label value={'Aqui você gerencia sua carteira de gastos gerais'}
-                customStyle={styles.lbl}
+            <Label value={'Aqui você gerencia sua garagem de gastos gerais'}
+                customStyle={[styles.lbl,{textAlign:'right'}]}
             />
           </View>
         </TouchableHighlight>
+
+        <Label value={'Criado por\nLucas Roberto'}
+            customStyle={[styles.lblLgnd]}
+        />
       </View>
     </>
   );
@@ -74,70 +78,53 @@ const styles = StyleSheet.create({
   nextPageOptStyle:{
     width: screenWidth,
     height:screenHeight,
-    backgroundColor:'#d9dae1',
+    backgroundColor:'#f7f7f7',
     paddingHorizontal:10,
     
   },
   title:{
     color: '#000',
     textAlign:'center',
-    marginTop:80,
-    marginBottom: screenHeight / 11,
+    fontSize:40,
+    marginVertical: screenHeight * 0.09,
   },
   lbl:{
-    color: '#333',
-    marginLeft: 45,
+    color: '#fff',
+    marginHorizontal: 40,
     marginBottom: 30,
-    fontSize:14
+    fontSize:14,
+    width:screenWidth/2
+  },
+  lblLgnd:{
+    marginTop:40,
+    color: '#000',
+    fontSize: 10,
+    textAlign:'center'
   },
   card:{
     marginTop:40,
-    backgroundColor:'#fff',
-    borderRadius:10,
-    width:screenWidth - 40,
-    marginLeft:10,
+    backgroundColor:'#000',
+    borderRadius:20,
+    borderTopLeftRadius:0,
+    width:screenWidth - 80,
+    marginLeft:30,
   },
-  btnWrap:{
-    justifyContent:'center',
-    marginVertical:20,
-    
+  cardRight:{
+    alignItems:'flex-end',
+    borderTopLeftRadius:20,
+    borderTopRightRadius:0,
   },
   btnStyle:{
     width:screenWidth / 2.5
   },
   btnStyle2:{
     width:screenWidth / 2.5,
-    backgroundColor:'#fff'
+    backgroundColor:'#000',
+    marginVertical:1
   },
   ad:{
     alignItems:'center',
   },
-});
-
-const nextPageOptStyle = StyleSheet.create({
-  width: screenWidth,
-  height:screenHeight,
-  backgroundColor:'#06901E',
-  padding:10
-});
-
-const title = StyleSheet.create({
-  color: '#fafafa',
-  marginTop:screenWidth / 8
-});
-
-const lbl = StyleSheet.create({
-  color: '#fafafa',
-  marginLeft: 10
-});
-
-const btnWrap = StyleSheet.create({
-  flexDirection:'row',
-  justifyContent:'center'
-});
-
-const btnStyle = StyleSheet.create({
-  width:screenWidth / 2.5
 });
 
 export default HomeNewScreen;

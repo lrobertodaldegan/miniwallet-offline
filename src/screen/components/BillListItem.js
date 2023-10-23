@@ -73,12 +73,12 @@ const BillListItem = ({
   const loadRemoveOption = () => {
     if(removable === true){
       return (
-        <TouchableHighlight style={[removeBtnStyle, {backgroundColor:'#ff1717'}]} 
-              underlayColor='#e1fce8'
+        <TouchableHighlight style={[removeBtnStyle]} 
+              underlayColor='transparent'
               onPress={() => remove(bill)}>
 
           <View style={{flexDirection:'row'}}>
-            <Legend icon={faTrash} iconStyle={iconStyle} lblStyle={{color:'#e8faed'}} value='Apagar' />
+            <Legend icon={faTrash} iconStyle={iconStyle} lblStyle={{color:'#d50000'}} value='Apagar' />
           </View>
           
         </TouchableHighlight>
@@ -89,20 +89,33 @@ const BillListItem = ({
   }
 
   const loadIcon = () => {
+    let margin = {marginBottom:5};
     let yellow = {color:'#ffc25e'};
     let green = {color:'#06901E'};
     let lgreen = {color:'#91ff93'};
+    let black = {...margin, color:'#000'};
+    let gray = {...margin, color:'#ccc'};
 
-    let icon = <FontAwesomeIcon icon={faCircleCheck} size={25} style={yellow}/>;
+    let icon = <FontAwesomeIcon icon={faCircleCheck} size={25} style={gray}/>;
+    let iconLgnd = 'Pagar'; 
 
     if(bill.type == IN){
-      icon = <FontAwesomeIcon icon={faSackDollar} size={25} style={lgreen}/>;
+      icon = <FontAwesomeIcon icon={faSackDollar} size={25} style={black}/>;
+      iconLgnd = 'Recebido!'; 
     } else {
-      if(statusLbl == OK)
-        icon = <FontAwesomeIcon icon={faCircleCheck} size={25} style={green}/>;
+      if(statusLbl == OK){
+        icon = <FontAwesomeIcon icon={faCircleCheck} size={25} style={black}/>;
+        iconLgnd = 'Pago!'; 
+      }
     }
 
-    return icon;
+    return (
+      <View style={iconWrap}>
+        {icon}
+
+        <Legend icon={null} value={iconLgnd}/>
+      </View>
+    );
   }
 
   const getBkgItemColor = () => {
@@ -124,22 +137,22 @@ const BillListItem = ({
 
   return (
     <View>
-      <View style={[listItemStyle, getBkgItemColor()]}>
+      <View style={[listItemStyle]} elevation={1}>
         <View style={liLeftStyle}>
           <View style={liHeaderStyle}>
             <Legend icon={null} value={`${bill.desc} - ${bill.cat}`} />
 
             <FontAwesomeIcon icon={bill.type == IN ? faArrowTrendUp : faArrowTrendDown} 
                 size={12}
-                style={[legendIcon, {color: bill.type == IN ? 'green' : 'orange'}]}
+                style={[legendIcon, {color: bill.type == IN ? '#000' : '#d50000'}]}
             />
           </View>
 
-          <SubTitleLabel customStyle={{fontWeight:'bold'}} value={`R$ ${bill.value}`} />
+          <SubTitleLabel value={`R$ ${bill.value}`} />
         </View>
 
         <TouchableHighlight style={liRightStyle} 
-            underlayColor='#e1fce8'
+            underlayColor='transparent'
             onPress={() => updateBillStatus()}>
 
           {loadIcon()}
@@ -153,6 +166,12 @@ const BillListItem = ({
 
 const screenWidth = Dimensions.get('window').width;
 
+const iconWrap = StyleSheet.create({
+  alignItems:'center',
+  marginTop:10,
+  width:screenWidth * 0.15,
+});
+
 const legendIcon = StyleSheet.create({
   marginTop:2.5,
   marginLeft: 5
@@ -164,9 +183,7 @@ const listItemStyle = StyleSheet.create({
   marginHorizontal:10,
   paddingHorizontal: 30,
   paddingVertical: 20,
-  borderTopLeftRadius: 10,
-  borderTopRightRadius: 10,
-  borderColor:'#efefef',
+  borderRadius:10,
   backgroundColor: '#fafafa',
 });
 
@@ -190,17 +207,16 @@ const removeBtnStyle = StyleSheet.create({
   alignItems: 'center',
   width: (screenWidth - 20),
   marginLeft:10,
-  borderColor:'#efefef',
-  backgroundColor: '#fafafa',
+  backgroundColor: '#f7f7f7',
   borderBottomLeftRadius: 10,
   borderBottomRightRadius: 10,
   marginBottom:5,
 });
 
 const iconStyle = StyleSheet.create({
-  color:'#e8faed',
-  marginTop:5, 
-  marginRight:5,
+  color:'#d50000',
+  marginTop:2.5, 
+  marginRight:2,
 });
 
 export default BillListItem;

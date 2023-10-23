@@ -18,8 +18,8 @@ const Modal = ({content, isActive=false, onClose}) => {
   if(isActive){
     return (
       <View style={obscureBkg}>
-        <View style={bkg}>
-          <TouchableHighlight underlayColor='#e1fce8' style={header} onPress={() => onClose()}>
+        <View style={bkg} elevation={1}>
+          <TouchableHighlight underlayColor='transparent' style={header} onPress={() => onClose()}>
             <FontAwesomeIcon icon={faXmark} size={headerClose.fontSize} style={headerClose}/>
           </TouchableHighlight>
 
@@ -46,7 +46,8 @@ const obscureBkg = StyleSheet.create({
 
 const bkg = StyleSheet.create({
   position:'absolute',
-  backgroundColor:'#fefefe',
+  backgroundColor:'#fff',
+  borderRadius:10,
   top:screenHeight / 4,
   left:10,
   width:screenWidth - 20,
@@ -61,7 +62,7 @@ const header = StyleSheet.create({
 const headerClose = StyleSheet.create({
   fontSize:20,
   margin:20,
-  color:'#777',
+  color:'#000',
 });
 
 const body = StyleSheet.create({

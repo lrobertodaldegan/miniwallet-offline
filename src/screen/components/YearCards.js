@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
   cardSelected: {
-    borderWidth:5,
-    borderColor: '#9df79c',
+    borderWidth:1,
+    borderColor: '#000',
   },
   yearCard: {
     width:(screenWidth - 20) / 3.1,

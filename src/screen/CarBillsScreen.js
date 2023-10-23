@@ -6,17 +6,14 @@ import {
   View,
 } from 'react-native';
 
-import { faWallet } from '@fortawesome/free-solid-svg-icons/faWallet';
-
-import BillService from "../service/BillService";
+import CarBillService from "../service/CarBillService";
 import { useIsFocused } from "@react-navigation/native";
-import BillsByMonthListItem from "./components/BillsByMonthListItem";
+import CarBillsByMonthListItem from "./components/CarBillsByMonthListItem";
 import HeaderNavigator from "./components/HeaderNavigator";
+import { faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import Months from "../service/Months";
 
-const IN = 'IN';
-const FIXA = 'Fixa';
-
-const BillsScreen = ({navigation}) => {
+const CarBillsScreen = ({navigation}) => {
   const [mapItensByMonth, setMapItensByMonth] = useState(null);
   const isFocused = useIsFocused();
 
@@ -26,7 +23,7 @@ const BillsScreen = ({navigation}) => {
   },[isFocused]);
 
   const loadItens = () => {
-    BillService.get()
+    CarBillService.get()
                 .then((result) => doItensMapByMonth(result))
                 .catch((e) => console.log(e));
   }
@@ -38,7 +35,8 @@ const BillsScreen = ({navigation}) => {
       for(let c=0; c<itens.length; c++){
         let i = itens[c];
 
-        if(i && i.cat){
+        if(i && i.desc){
+          console.log(i);
           let key = getBillMapKey(i);
 
           if((newMap.get(key) && [...newMap.get(key).values()].length > 0) == true){
@@ -54,10 +52,10 @@ const BillsScreen = ({navigation}) => {
   }
 
   const getBillMapKey = (bill) => {
-    if(bill.cat == FIXA)
-      return FIXA;
-    else
-      return `${bill.refMonth}/${bill.refYear}`;
+    let month = bill.date.substring(3,5);
+    let year = bill.date.substring(6);
+
+    return `${Months.names[month]}/${year}`;
   }
 
   const getMapKeys = () => {
@@ -69,7 +67,7 @@ const BillsScreen = ({navigation}) => {
     return k.reverse();
   }
 
-  const getBalanceOfMonth = (itemKey) => {
+  const getGasCostOfMonth = (itemKey) => {
     let balance = new Number(0);
     
     if(itemKey){
@@ -79,16 +77,10 @@ const BillsScreen = ({navigation}) => {
         for(let i=0; i < itens.length; i++){
           let val = itens[i].value;
 
-          if(itens[i].type == IN){
+          if(itens[i].desc == 'Combustível')
             balance = balance + new Number(val);
-          } else {
-            balance = balance - new Number(val);
-          }
         }
       }
-
-      if(itemKey != FIXA)
-        balance = balance + getBalanceOfMonth(FIXA);
     }
 
     return new Number(balance);
@@ -104,13 +96,9 @@ const BillsScreen = ({navigation}) => {
         for(let i=0; i < itens.length; i++){
           let val = itens[i].value;
 
-          if(itens[i].type != IN)
-            costs = costs + new Number(val);
+          costs = costs + new Number(val);
         }
       }
-
-      if(itemKey != FIXA)
-        costs = costs + getCostsOfMonth(FIXA);
     }
 
     return new Number(costs);
@@ -121,9 +109,9 @@ const BillsScreen = ({navigation}) => {
         <FlatList
           ListHeaderComponent={() => {
             return (
-              <HeaderNavigator icon={faWallet} 
+              <HeaderNavigator icon={faWarehouse} 
                   navigation={navigation}
-                  action={() => navigation.navigate('Home')} 
+                  action={() => navigation.navigate('Garage')} 
               />
             );
           }}
@@ -131,9 +119,9 @@ const BillsScreen = ({navigation}) => {
           style={{marginBottom: 80}}
           renderItem={(key) => {
             return (
-              <BillsByMonthListItem month={key.item} 
+              <CarBillsByMonthListItem month={key.item} 
                   costs={getCostsOfMonth(key.item)}
-                  balance={getBalanceOfMonth(key.item)} 
+                  gasCost={getGasCostOfMonth(key.item)} 
                   bills={mapItensByMonth.get(key.item)}
                   onRemove={() => loadItens()}
               />
@@ -148,15 +136,4 @@ const bkg = StyleSheet.create({
   backgroundColor:'#f7f7f7'
 });
 
-const iconStyle = StyleSheet.create({
-  marginTop:14,
-  marginLeft:20,
-  color:'#555'
-});
-
-const headerBtn = StyleSheet.create({
-  flexDirection:'row',
-  alignItens:'center'
-});
-
-export default BillsScreen;
+export default CarBillsScreen;

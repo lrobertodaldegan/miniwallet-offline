@@ -26,12 +26,12 @@ const CarBillListItem = ({bill, removable=false, onRemove}) => {
   const loadRemoveOption = () => {
     if(removable === true){
       return (
-        <TouchableHighlight style={[removeBtnStyle, {backgroundColor:'#ff1717'}]} 
-              underlayColor='#e1fce8'
+        <TouchableHighlight style={[removeBtnStyle]} 
+              underlayColor='transparent'
               onPress={() => remove(bill)}>
 
           <Legend icon={faTrash} iconStyle={iconStyle} iconSize={10} 
-              lblStyle={{color:'#e8faed'}} value='Apagar' 
+              lblStyle={{color:'#d50000'}} value='Apagar' 
           />
           
         </TouchableHighlight>
@@ -61,9 +61,9 @@ const CarBillListItem = ({bill, removable=false, onRemove}) => {
   }
 
   return (
-    <View>
+    <View elevation={1}>
       <TouchableHighlight style={listItemStyle}
-          underlayColor='#e1fce8'
+          underlayColor='transparent'
           onPress={() => setShowDetails(!showDetails)}>
 
         <>
@@ -77,7 +77,7 @@ const CarBillListItem = ({bill, removable=false, onRemove}) => {
           </View>
 
           <TouchableHighlight style={liRightStyle} 
-              underlayColor='#e1fce8'>
+              underlayColor='transparent'>
             <Label value={bill.car} />
           </TouchableHighlight>
         </>
@@ -131,7 +131,6 @@ const removeBtnStyle = StyleSheet.create({
   alignItems: 'center',
   width: (screenWidth - 20),
   marginLeft:10,
-  borderColor:'#efefef',
   backgroundColor: '#fafafa',
   borderBottomLeftRadius: 10,
   borderBottomRightRadius: 10,
@@ -139,9 +138,9 @@ const removeBtnStyle = StyleSheet.create({
 });
 
 const iconStyle = StyleSheet.create({
-  color:'#e8faed',
-  marginTop:5, 
-  marginRight:5,
+  color:'#d50000',
+  marginTop:4, 
+  marginRight:2,
 });
 
 export default CarBillListItem;

@@ -18,7 +18,7 @@ const style = StyleSheet.create({
   paddingHorizontal: 20,
   paddingTop: 30,
   paddingBottom: 5,
-  color: '#555',
+  color: '#000',
   fontFamily: 'Montserrat-Regular',
 });
 

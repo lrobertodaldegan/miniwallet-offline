@@ -4,12 +4,15 @@ import {
   Dimensions,
   View,
   TextInput,
+  ScrollView,
 } from 'react-native';
-import { faGasPump, faTruckMonster, faScrewdriverWrench, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faWarning, faGasPump, faTruckMonster, faScrewdriverWrench, faPlus, faCar } from "@fortawesome/free-solid-svg-icons";
 import FloatBtn from '../FloatBtn';
 import CarBillService from "../../../service/CarBillService";
+import CarService from "../../../service/CarService";
 import Card from '../Card';
 import Legend from '../Legend';
+import Label from '../Label';
 
 const CarBillForm = ({onSubmit}) => {
   const [car, setCar] = useState(null);
@@ -17,6 +20,14 @@ const CarBillForm = ({onSubmit}) => {
   const [obs, setObs] = useState(null);
   const [value, setValue] = useState(null);
   const [day, setDay] = useState(null);
+  const [cars, setCars] = useState([]);
+  const [msg, setMsg] = useState(null);
+
+  useEffect(()=>{
+    CarService.get().then(cs => {
+      setCars(cs);
+    }).catch(e => console.log(e));
+  }, []);
 
   useEffect(() =>{
     let dt = new Date();
@@ -34,22 +45,54 @@ const CarBillForm = ({onSubmit}) => {
   }, []);
 
   const save = () => {
-    let carBill = {
-      id: new Date().getTime(),
-      car: car,
-      desc: desc,
-      value: value,
-      date: day
-    }
+    if((car && car !== null) && (value && value !== null)
+                             && (day && day !== null)){
+      setMsg(null);
+      
+      let carBill = {
+        id: new Date().getTime(),
+        car: car,
+        desc: desc,
+        value: value,
+        date: day
+      }
 
-    CarBillService.store(carBill)
-                .then((result) => onSubmit())
-                .catch(e => console.log(e));
+      CarBillService.store(carBill)
+                  .then((result) => onSubmit())
+                  .catch(e => console.log(e));
+    } else {
+      setMsg('Selecione um carro, informe um valor e a data para continuar!');
+    }
+  }
+
+  const renderCarsOptions = () => {
+    let cs = [];
+
+    cars.forEach(c => {
+      cs.push(
+        <Card action={() => setCar(car == c.id ? null : c.id)} key={c.id}
+            style={[styles.cardOption, car == c.id ? styles.cardSelected : {}]}
+            content={<Legend icon={faCar} value={c.id} customStyle={{justifyContent:'center'}}/>}
+        />
+      );
+    });
+
+    return cs;
+  }
+
+  const renderMsg = () => {
+    if(msg && msg !== null){
+      return <Legend icon={faWarning} value={msg} lblStyle={styles.msg} iconStyle={styles.msg}/>
+    } else {
+      return <></>
+    }
   }
 
   return (
     <>
-      <View style={styles.formStyle}>
+      <ScrollView contentContainerStyle={styles.formStyle}>
+
+        <Label value='Tipo de gasto' customStyle={styles.lbl}/>
 
         <View style={styles.cardWrap}>
           <Card action={() => setDesc('Combustível')}
@@ -68,12 +111,13 @@ const CarBillForm = ({onSubmit}) => {
           />
         </View>
 
-        <TextInput placeholder='Carro' 
-            placeholderTextColor='#333'
-            style={[styles.inputStyle, styles.inputHalf]}
-            value={car} 
-            onChangeText={setCar}
-        />
+        <Label value='Carro' customStyle={styles.lbl}/>
+
+        <View style={styles.cardWrap}>
+          {renderCarsOptions()}
+        </View>
+
+        <Label value='Detalhes (valor, data e observações)' customStyle={styles.lbl}/>
 
         <TextInput placeholder='Valor' 
             placeholderTextColor='#333'
@@ -90,13 +134,15 @@ const CarBillForm = ({onSubmit}) => {
             onChangeText={setDay}
         />
 
-        <TextInput placeholder='Observação' 
+        <TextInput placeholder='Observação (ex.: KM, detalhe da manutenção...)' 
             placeholderTextColor='#333'
             style={[styles.inputStyle, styles.inputHalf]}
             value={obs} 
             onChangeText={setObs}
         />
-      </View>
+
+        {renderMsg()}
+      </ScrollView>
 
       <FloatBtn icon={faPlus} label='Adicionar gasto com carro' action={() => save()}/>
     </>
@@ -110,13 +156,13 @@ const styles = StyleSheet.create({
   formStyle: {
     paddingTop:20,
     height:screenHeight,
-    backgroundColor:'#e8faed'
+    backgroundColor:'#f7f7f7'
   },
   doubleInputsWrap:{
     flexDirection:'row'
   },
   inputStyle: {
-    color: '#333',
+    color: '#000',
     borderWidth:1,
     borderRadius:10,
     borderColor:'#f0f0f0',
@@ -135,8 +181,8 @@ const styles = StyleSheet.create({
     marginHorizontal:2
   },
   cardSelected: {
-    borderWidth:5,
-    borderColor: '#9df79c',
+    borderWidth:1,
+    borderColor: '#000',
   },
   modalHeaderlbl:{
     flexDirection:'row',
@@ -160,9 +206,12 @@ const styles = StyleSheet.create({
   cardLbl: {
     textAlign:'center'
   },
-  cardSelected: {
-    borderWidth:5,
-    borderColor: '#9df79c',
+  lbl:{
+    fontSize:14,
+    marginLeft:5
+  },
+  msg:{
+    color:'#d50000'
   },
 });
 

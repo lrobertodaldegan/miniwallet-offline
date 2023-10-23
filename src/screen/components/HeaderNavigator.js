@@ -10,34 +10,50 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 import Label from './Label';
+import mobileAds, { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720~7808361383';
+
+mobileAds().initialize();
 
 const HeaderNavigator = ({icon, navigation, action}) => {
   return (
-    <View style={headerNavigatorWrap} elevation={10}>
-      <TouchableHighlight 
-          underlayColor='transparent' 
-          style={headerBtnWrap}
-          onPress={() => navigation.goBack()}>
+    <>
+      <BannerAd
+            unitId={adUnitId}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: false,
+            }}
+      />
 
-        <View style={headerBtn}>
-          <FontAwesomeIcon icon={faChevronLeft} size={14} style={[iconStyle, lbl]}/>
+      <View style={headerNavigatorWrap} elevation={2}>
+        
 
-          <Label value='Voltar' customStyle={lbl}/>
-        </View>
-      </TouchableHighlight>
+        <TouchableHighlight 
+            underlayColor='transparent' 
+            style={headerBtnWrap}
+            onPress={() => navigation.goBack()}>
 
-      <TouchableHighlight underlayColor='transparent' 
-      style={headerBtnWrap}
-          onPress={() => action()}>
+          <View style={headerBtn}>
+            <FontAwesomeIcon icon={faChevronLeft} size={14} style={[iconStyle, lbl]}/>
 
-        <View style={headerBtn}>
+            <Label value='Voltar' customStyle={lbl}/>
+          </View>
+        </TouchableHighlight>
 
-          <Label value='Ir para ' customStyle={lbl}/>
+        <TouchableHighlight underlayColor='transparent' 
+        style={headerBtnWrap}
+            onPress={() => action()}>
 
-          <FontAwesomeIcon icon={icon} size={25} style={[iconStyle, lbl, {marginTop:9.5}]}/>
-        </View>
-      </TouchableHighlight>
-    </View>
+          <View style={headerBtn}>
+
+            <Label value='Ir para ' customStyle={lbl}/>
+
+            <FontAwesomeIcon icon={icon} size={25} style={[iconStyle, lbl, {marginTop:9.5}]}/>
+          </View>
+        </TouchableHighlight>
+      </View>
+    </>
   );
 }
 
@@ -47,7 +63,7 @@ const headerNavigatorWrap = StyleSheet.create({
   paddingTop:20,
   paddingHorizontal: 20,
   paddingBottom: 20,
-  backgroundColor:'#fff',
+  backgroundColor:'#f7f7f7',
   borderBottomLeftRadius:30
 });
 

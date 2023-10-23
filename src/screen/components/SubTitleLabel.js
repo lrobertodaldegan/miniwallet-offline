@@ -16,8 +16,8 @@ const SubTitleLabel = ({value, customStyle}) => {
 const style = StyleSheet.create({
   fontSize: 22,
   padding: 10,
-  color: '#777',
-  fontFamily: 'Montserrat-Bold',
+  color: '#000',
+  fontFamily: 'Montserrat-Regular',
 });
 
 export default SubTitleLabel;

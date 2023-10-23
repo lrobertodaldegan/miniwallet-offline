@@ -7,10 +7,10 @@ import {
 } from 'react-native';
 import SubTitleLabel from './SubTitleLabel';
 import Legend from './Legend';
-import BillListItem from "./BillListItem";
+import CarBillListItem from "./CarBillListItem";
 import Hr from "./Hr";
 
-const BillsByMonthListItem = ({month,costs=0, balance=0, bills,onRemove=()=>null}) => {
+const CarBillsByMonthListItem = ({month, costs=0, gasCost=0, bills, onRemove=()=>null}) => {
   const [hide, setHide] = useState(true);
   const [itens, setItens] = useState([]);
 
@@ -40,7 +40,9 @@ const BillsByMonthListItem = ({month,costs=0, balance=0, bills,onRemove=()=>null
                 value={`${month}`}/>
             
             <Legend icon={null} 
-                value={month === 'Fixa' ? `Gastos: R$ ${costs}` : `Gastos: R$ ${costs}\nSaldo: R$ ${balance}`}/>
+                value={`Total gasto: R$ ${costs}`}/>
+
+            <Legend icon={null} value={`Gasto em combustível: R$ ${gasCost}`}/>
           </View>
         </TouchableHighlight>
 
@@ -60,7 +62,7 @@ const BillsByMonthListItem = ({month,costs=0, balance=0, bills,onRemove=()=>null
             keyExtractor={(child) => child.id}
             renderItem={(child) => {
               return (
-                <BillListItem bill={child.item} 
+                <CarBillListItem bill={child.item} 
                     removable={true}
                     onRemove={() => removeHandler(child.item)}
                 />
@@ -85,9 +87,9 @@ const btnLblStyle = StyleSheet.create({
 });
 
 const monthsLblStyle = StyleSheet.create({
-  flexDirection: 'row',
+  
   justifyContent: 'center',
   alignItems:'center'
 });
 
-export default BillsByMonthListItem;
+export default CarBillsByMonthListItem;

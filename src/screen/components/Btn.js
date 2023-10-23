@@ -30,7 +30,7 @@ const Btn = ({label, icon=null, iconSize=15, customStyle={}, lblColor='#fafafa',
 
 const styles = StyleSheet.create({
   btnStyle: {
-    backgroundColor: '#06901E',
+    backgroundColor: '#000',
     paddingVertical: 20,
     margin:10,
     borderRadius:10
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   iconStyle: {
-    marginTop:5,
+    marginTop:1,
     marginRight:10,
   }
 });

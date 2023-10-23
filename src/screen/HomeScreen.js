@@ -156,7 +156,7 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <>
-      <StatusBar barStyle='dark-content' backgroundColor='#fff'/>
+      <StatusBar barStyle='dark-content' backgroundColor='#f7f7f7'/>
 
       <View style={bkg}>
         <FlatList
@@ -208,7 +208,7 @@ const HomeScreen = ({navigation}) => {
             );
           }}
           data={itens}
-          style={{marginBottom: 80}}
+          style={listStyle}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => 
             <BillListItem bill={item} 
@@ -260,6 +260,11 @@ const HomeScreen = ({navigation}) => {
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
+const listStyle = StyleSheet.create({
+  marginBottom: 80,
+  minHeight:screenHeight * 0.85
+});
+
 const title = StyleSheet.create({
   textAlign:'center',
   color:'#000'
@@ -293,7 +298,7 @@ const refreshBtnStyle = StyleSheet.create({
 
 const bkg = StyleSheet.create({
   backgroundColor:'#f7f7f7',
-  height:screenHeight
+  
 });
 
 const headerOptions = StyleSheet.create({

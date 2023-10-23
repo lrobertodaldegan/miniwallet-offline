@@ -1,6 +1,7 @@
 const Months = {
   names:[
     'Janeiro',
+    'Janeiro',
     'Fevereiro',
     'Março',
     'Abril',

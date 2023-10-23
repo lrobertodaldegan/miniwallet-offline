@@ -39,7 +39,7 @@ const AddBillScreen = ({navigation}) => {
   const loadBoard = () => {
     if(success) {
       return (
-        <Board action={() => reset()} icon={faCheck} iconStyle={{color:'#06901E'}}
+        <Board action={() => reset()} icon={faCheck} iconStyle={{color:'#000'}}
             content={<Label value='Ok! Adicionado com sucesso!' />} 
         />
       );
@@ -54,6 +54,8 @@ const AddBillScreen = ({navigation}) => {
           navigation={navigation} 
           action={() => navigation.navigate('Home')}
       />
+
+      <Label value='Tipo de lançamento' customStyle={styles.lbl}/>
 
       <View style={styles.formOptionsWrap}>
         <Card action={() => setForm(FIXA)}
@@ -78,7 +80,7 @@ const screenHeight = Dimensions.get('screen').height;
 
 const styles = StyleSheet.create({
   wrap: {
-    backgroundColor:'#e8faed',
+    backgroundColor:'#f7f7f7',
     height:screenHeight
   },
   formOptionsWrap: {
@@ -87,9 +89,14 @@ const styles = StyleSheet.create({
   cardLbl: {
     textAlign:'center'
   },
-  cardSelected: {
-    borderWidth:5,
-    borderColor: '#9df79c',
+  cardSelected:{
+    borderColor:'#000',
+    borderWidth:1,
+  },
+  lbl:{
+    fontSize:14,
+    marginLeft:5,
+    marginTop:10
   }
 });
 

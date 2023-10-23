@@ -5,12 +5,12 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowTrendDown, faArrowTrendUp, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faWarning, faArrowTrendDown, faArrowTrendUp, faPlus } from '@fortawesome/free-solid-svg-icons';
 import BillService from '../../../service/BillService';
 import Btn from '../Btn';
 import Card from "../Card";
 import Legend from '../Legend';
+import Label from '../Label';
 
 const IN = 'IN';
 const OUT = 'OUT';
@@ -19,6 +19,7 @@ const FixBillForm = ({onSubmit=()=>null}) => {
   const [desc, setDesc] = useState(null);
   const [type, setType] = useState(null);
   const [value, setValue] = useState(null);
+  const [msg, setMsg] = useState(null);
 
   const reset = () => {
     setDesc(null);
@@ -27,25 +28,43 @@ const FixBillForm = ({onSubmit=()=>null}) => {
   }
 
   const save = () => {
-    let bill = {
-      id: new Date().getTime(),
-      desc: desc,
-      type: type,
-      cat: 'Fixa',
-      value: value
+    if((desc && desc !== null) && (type && type !== null)
+                               && (value && value !== null)){
+      setMsg(null);
+      
+      let bill = {
+        id: new Date().getTime(),
+        desc: desc,
+        type: type,
+        cat: 'Fixa',
+        value: value
+      }
+
+      BillService.store(bill)
+                  .then((result) => {
+                    onSubmit();
+
+                    reset();
+                  })
+                  .catch(e => console.log(e));
+    } else {
+      setMsg('Informe um valor, uma descrição e selecione se é um lançamento de entrada ou saída!');
     }
+  }
 
-    BillService.store(bill)
-                .then((result) => {
-                  onSubmit();
-
-                  reset();
-                })
-                .catch(e => console.log(e));
+  const renderMsg = () => {
+    if(msg && msg !== null){
+      return <Legend icon={faWarning} value={msg} lblStyle={styles.msg} iconStyle={styles.msg}/>
+    } else {
+      return <></>
+    }
   }
 
   return (
     <View style={styles.formStyle}>
+
+      <Label value='Detalhes' customStyle={styles.lbl}/>
+
       <TextInput placeholder='Descrição da conta (Ex.: Luz)' 
           placeholderTextColor='#333'
           style={styles.inputStyle}
@@ -67,7 +86,7 @@ const FixBillForm = ({onSubmit=()=>null}) => {
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendUp} iconSize={15}
-                    iconStyle={[styles.cardLblIcon, {color:'green'}]} 
+                    iconStyle={[styles.cardLblIcon, {color:'#000'}]} 
                     customStyle={styles.cardLbl} value={'Entrada fixa'} />
               </View>
             } 
@@ -77,13 +96,15 @@ const FixBillForm = ({onSubmit=()=>null}) => {
             style={[styles.card, type == OUT ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
-                <Legend icon={faArrowTrendDown} iconSize={15}
-                    iconStyle={[styles.cardLblIcon, {color:'orange'}]}
+                <Legend icon={faArrowTrendDown} iconSize={20}
+                    iconStyle={[styles.cardLblIcon, {color:'#d50000'}]}
                     customStyle={styles.cardLbl} value={'Saída fixa'} />
               </View>
             } 
         />
       </View>
+
+      {renderMsg()}
 
       <Btn icon={faPlus} label='Adicionar' action={() => save()}/>
     </View>
@@ -97,14 +118,14 @@ const styles = StyleSheet.create({
     height:screenHeight
   },
   inputStyle: {
-    color: '#333',
+    color: '#000',
     borderWidth:1,
     borderRadius:10,
     borderColor:'#f0f0f0',
     marginHorizontal:10,
     marginTop:5,
     padding: 10,
-    backgroundColor:'#fafafa',
+    backgroundColor:'#f7f7f7',
     fontFamily: 'Montserrat-Regular',
   },
   modalHeaderlbl:{
@@ -123,15 +144,22 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   cardLblIcon: {
-    marginTop:2.5,
+    marginTop:0,
     marginRight: 5
   },
   cardLbl: {
     textAlign:'center'
   },
   cardSelected: {
-    borderWidth:5,
-    borderColor: '#9df79c',
+    borderWidth:1,
+    borderColor: '#000',
+  },
+  lbl:{
+    fontSize:14,
+    marginLeft:5
+  },
+  msg:{
+    color:'#d50000'
   },
 });
 

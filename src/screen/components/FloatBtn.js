@@ -20,7 +20,7 @@ const FloatBtn = ({label, icon=null, customStyle={}, action}) => {
       <View style={styles.lblWrap}>
         <FontAwesomeIcon icon={icon !== null ? icon : faCircle} 
             style={[styles.iconStyle, icon !== null ? {} : {marginTop:10}]}
-            size={icon !== null ? 15 : 5} 
+            size={icon !== null ? 20 : 5} 
         />
         <Text style={styles.lblStyle}>{label}</Text>
       </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   iconStyle: {
-    marginTop:5,
+    marginTop:1,
     marginRight:10,
     color:'#fff'
   }

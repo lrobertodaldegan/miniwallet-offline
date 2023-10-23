@@ -19,7 +19,7 @@ const hr = StyleSheet.create({
   marginLeft: screenWidth / 2.5,
   height: 1,
   borderBottomWidth: 1,
-  borderColor:'#c5d4c9',
+  borderColor:'#000',
 });
 
 export default Hr;

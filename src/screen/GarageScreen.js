@@ -9,10 +9,11 @@ import {
   StatusBar,
 } from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
-import { faWallet, faScrewdriverWrench, faCarSide } from '@fortawesome/free-solid-svg-icons/';
+import { faWallet, faScrewdriverWrench, faCarSide, faCar } from '@fortawesome/free-solid-svg-icons/';
 import Label from "./components/Label";
 import CarBillListItem from "./components/CarBillListItem";
 import CarBillService from "../service/CarBillService";
+import CarService from "../service/CarService";
 import FloatBtn from "./components/FloatBtn";
 import Legend from "./components/Legend";
 import TitleLabel from "./components/TitleLabel";
@@ -27,6 +28,7 @@ const GarageScreen = ({navigation}) => {
   const [filterLbl, setFilterLbl] = useState('');
   const [totalLbl, setTotalLbl] = useState([]);
   const [totalFuelLbl, setTotalFuelLbl] = useState([]);
+  const [cars, setCars] = useState([]);
 
   const isFocused = useIsFocused();
 
@@ -40,6 +42,8 @@ const GarageScreen = ({navigation}) => {
 
     CarBillService.get().then((result) => organizeItens(result))
                   .catch(e => console.log(e));
+
+    CarService.get().then(cs => setCars(cs)).catch(e=> console.log(e));
   }
 
   const toDate = (d) => {
@@ -191,7 +195,7 @@ const GarageScreen = ({navigation}) => {
 
   return (
     <>
-      <StatusBar backgroundColor='#06901E'/>
+      <StatusBar backgroundColor='#f7f7f7'/>
 
       <View style={bkg}>
         <FlatList
@@ -205,26 +209,34 @@ const GarageScreen = ({navigation}) => {
                 <TitleLabel value='Garagem' customStyle={title}/>
               
                 <View style={cardsWrap}>
-                  <Card content={(
+                  <Card action={() => navigation.navigate('CarBills')} content={(
                       <View>
                         <Label value={loadTotalMsg()} customStyle={costLbl}/>
-                        <Label value={'gastos este mês'} customStyle={costSubLbl}/>
+                        <Label value={'gastos\neste mês'} customStyle={costSubLbl}/>
                       </View>
                     )}
                   />
                 
-                  <Card content={(
+                  <Card action={() => navigation.navigate('CarBills')} content={(
                       <View>
                         <Label value={loadTotalFuelMsg()} customStyle={costLbl}/>
-                        <Label value={'gastos com combustível este mês'} customStyle={costSubLbl}/>
+                        <Label value={'gastos em\ncombustível este mês'} customStyle={costSubLbl}/>
                       </View>
                     )}
                   />
                 </View>
+
+                <TouchableHighlight 
+                    underlayColor='transparent'
+                    style={refreshBtnStyle}
+                    onPress={() => init()}>
+                  
+                  <Legend value='Atualizar'/>
+                </TouchableHighlight>
               
                 <View style={headerOptions}>
                   <TouchableHighlight 
-                      underlayColor='#e1fce8'
+                      underlayColor='transparent'
                       style={refreshBtnStyle}
                       onPress={() => filtered ? init() : setShowModal(true)}>
                     
@@ -232,18 +244,18 @@ const GarageScreen = ({navigation}) => {
                   </TouchableHighlight>
 
                   <TouchableHighlight 
-                      underlayColor='#e1fce8'
+                      underlayColor='transparent'
                       style={refreshBtnStyle}
-                      onPress={() => init()}>
+                      onPress={() => navigation.navigate('Cars')}>
                     
-                    <Legend value='Atualizar'/>
+                    <Legend icon={faCar} value='Meus carros'/>
                   </TouchableHighlight>
                 </View>
               </>
             );
           }}
           data={itens}
-          style={{marginBottom: 80}}
+          style={listStyle}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => {
             return (
@@ -254,7 +266,7 @@ const GarageScreen = ({navigation}) => {
         />
 
         <FloatBtn icon={faScrewdriverWrench} label='Adicionar gasto com carro' 
-            action={() => navigation.navigate('AddCarBill')} 
+            action={() => navigation.navigate(cars.length > 0 ? 'AddCarBill' : 'AddCar')} 
         />
       </View>
 
@@ -266,10 +278,16 @@ const GarageScreen = ({navigation}) => {
 }
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
+const listStyle = StyleSheet.create({
+  marginBottom: 80,
+  minHeight:screenHeight * 0.85
+});
 
 const title = StyleSheet.create({
   textAlign:'center',
-  marginBottom:20
+  marginBottom:20,
 });
 
 const refreshBtnStyle = StyleSheet.create({
@@ -279,7 +297,8 @@ const refreshBtnStyle = StyleSheet.create({
 });
 
 const bkg = StyleSheet.create({
-  backgroundColor:'#e8faed'
+  backgroundColor:'#f7f7f7',
+  
 });
 
 const cardsWrap = StyleSheet.create({

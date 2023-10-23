@@ -4,10 +4,10 @@ import {
 } from 'react-native';
 import { faWarehouse } from '@fortawesome/free-solid-svg-icons';
 import { useIsFocused } from "@react-navigation/native";
-import CarBillForm from "./components/form/CarBillForm";
+import CarForm from "./components/form/CarForm";
 import HeaderNavigator from "./components/HeaderNavigator";
 
-const AddCarBillScreen = ({navigation}) => {
+const AddCarScreen = ({navigation}) => {
   const focus = useIsFocused();
 
   useEffect(() => {}, [focus]);
@@ -20,9 +20,9 @@ const AddCarBillScreen = ({navigation}) => {
                     navigation={navigation}
                     action={() => navigation.navigate('Garage')} />
 
-      <CarBillForm onSubmit={() => navigation.navigate('Garage')}/>
+      <CarForm onSubmit={() => navigation.navigate('Cars')}/>
     </>
   );
 }
 
-export default AddCarBillScreen;
+export default AddCarScreen;

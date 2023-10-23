@@ -4,16 +4,16 @@ import {
   TouchableHighlight,
   StyleSheet,
   Dimensions,
+  View
 } from 'react-native';
 
 const Card = ({content, style={}, action= () => null}) => {
   return (
-    <TouchableHighlight 
-        underlayColor='#e1fce8'
-        style={[cardStyle, style]}
+    <TouchableHighlight
+        underlayColor='transparent'
         onPress={() => action()}>
 
-        <>{content}</>
+        <View style={[cardStyle, style]} elevation={1}>{content}</View>
 
     </TouchableHighlight>
   );
@@ -23,8 +23,6 @@ const screenWidth = Dimensions.get('window').width;
 
 const cardStyle = StyleSheet.create({
   width: (screenWidth / 2) - 20,
-  borderWidth:1,
-  borderColor:'#efefef',
   borderRadius:10,
   fontSize: 26,
   paddingVertical: 20,
@@ -33,7 +31,7 @@ const cardStyle = StyleSheet.create({
   color: '#555',
   justifyContent:'center',
   alignItens: 'center',
-  backgroundColor:'#fafafa'
+  backgroundColor:'#f7f7f7'
 });
 
 export default Card;

@@ -11,18 +11,20 @@ import Card from './Card';
 
 const BalanceCards = ({balance=0, totalBills=0}) => {
 
-  const balanceColor = balance > 0 ? '#9df79c' : '#ffeed1';
-  const balanceFontColor = balance > 0 ? '#035c00' : '#f29c0f';
+  const balanceColor = '#f7f7f7';//balance > 0 ? '#9df79c' : '#ffeed1';
+  const balanceFontColor = balance >= 0 ? '#000' : '#d50000';
 
   return (
     <View style={cardWrapperStyle}>
-      <Card style={{backgroundColor:'#ffeed1'}} content={(
+      {/*<Card style={{backgroundColor:'#ffeed1'}} content={(*/}
+      <Card content={(
           <View>
-            <Text style={[balanceStyle, {color:'#f29c0f'}]}>
+            {/*<Text style={[balanceStyle, {color:'#f29c0f'}]}>*/}
+            <Text style={[balanceStyle]}>
               {`R$ ${totalBills}`}
             </Text>
 
-            <Text style={[balanceTitleStyle, {color:'#f29c0f'}]}>Gastos totais</Text>
+            <Text style={[balanceTitleStyle]}>Gastos totais</Text>
           </View>
         )}
       />
@@ -56,7 +58,7 @@ const balanceStyle = StyleSheet.create({
   fontSize: 24,
   padding: 10,
   textAlign:'center',
-  color:'#555',
+  color:'#000',
   fontFamily: 'Montserrat-Bold',
 });
 
@@ -64,7 +66,7 @@ const balanceTitleStyle = StyleSheet.create({
   fontSize: 14,
   padding: 10,
   textAlign:'center',
-  color:'#555',
+  color:'#000',
   fontFamily: 'Montserrat-Regular',
 });
 

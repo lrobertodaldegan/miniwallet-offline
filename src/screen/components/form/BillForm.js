@@ -5,11 +5,11 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowTrendDown, faArrowTrendUp, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faWarning, faArrowTrendDown, faArrowTrendUp, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Btn from '../Btn';
 import Card from '../Card';
 import Legend from '../Legend';
+import Label from '../Label';
 import BillService from "../../../service/BillService";
 import MonthCards from '../MonthCards';
 import YearCards from '../YearCards';
@@ -24,6 +24,7 @@ const BillForm = ({onSubmit=()=>null}) => {
   const [value, setValue] = useState(null);
   const [refMonth, setRefMonth] = useState(null);
   const [refYear, setRefYear] = useState(null);
+  const [msg, setMsg] = useState(null);
 
   const reset = () => {
     setDesc(null);
@@ -35,27 +36,46 @@ const BillForm = ({onSubmit=()=>null}) => {
   }
 
   const save = () => {
-    let bill = {
-      id: new Date().getTime(),
-      desc: desc,
-      type: type,
-      cat: cat,
-      value: value,
-      refMonth: refMonth,
-      refYear: refYear,
+    if((value && value !== null) && (desc && desc !== null)
+                                 && (type && type!== null)
+                                 && (refMonth && refMonth !== null)
+                                 && (refYear  && refYear  !== null)){
+      setMsg(null);
+
+      let bill = {
+        id: new Date().getTime(),
+        desc: desc,
+        type: type,
+        cat: cat,
+        value: value,
+        refMonth: refMonth,
+        refYear: refYear,
+      }
+
+      BillService.store(bill)
+                  .then((result) => {
+                    onSubmit();
+
+                    reset();
+                  })
+                  .catch(e => console.log(e));
+    } else {
+      setMsg('Informe uma descrição, o valor, o mês e ano de referência e se é um lançamento de entrada ou saída!');
     }
+  }
 
-    BillService.store(bill)
-                .then((result) => {
-                  onSubmit();
-
-                  reset();
-                })
-                .catch(e => console.log(e));
+  const renderMsg = () => {
+    if(msg && msg !== null){
+      return <Legend icon={faWarning} value={msg} lblStyle={styles.msg} iconStyle={styles.msg}/>
+    } else {
+      return <></>
+    }
   }
 
   return (
     <View style={styles.formStyle}>
+      <Label value='Detalhes' customStyle={styles.lbl}/>
+
       <TextInput placeholder='Descrição (Ex.: Compra no shopping)' 
           placeholderTextColor='#333'
           style={styles.inputStyle}
@@ -84,7 +104,7 @@ const BillForm = ({onSubmit=()=>null}) => {
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendUp} iconSize={15} 
-                    iconStyle={[styles.cardLblIcon, {color:'green'}]}
+                    iconStyle={[styles.cardLblIcon, {color:'#000'}]}
                     customStyle={styles.cardLbl} value={'Recebi'} />
               </View>
             } 
@@ -95,16 +115,22 @@ const BillForm = ({onSubmit=()=>null}) => {
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendDown} iconSize={15} 
-                    iconStyle={[styles.cardLblIcon, {color:'orange'}]}
+                    iconStyle={[styles.cardLblIcon, {color:'#d50000'}]}
                     customStyle={styles.cardLbl} value={'Gastei'} />
               </View>
             } 
         />
       </View>
 
+      <Label value='Mês de referência' customStyle={styles.lbl}/>
+
       <MonthCards refMonth={refMonth} action={setRefMonth}/>
 
+      <Label value='Ano de referência' customStyle={styles.lbl}/>
+
       <YearCards refYear={refYear} action={setRefYear}/>
+
+      {renderMsg()}
 
       <Btn icon={faPlus} label='Adicionar' action={() => save()}/>
     </View>
@@ -151,8 +177,16 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
   cardSelected: {
-    borderWidth:5,
-    borderColor: '#9df79c',
+    borderWidth:1,
+    borderColor: '#000',
+  },
+  lbl:{
+    fontSize:14,
+    marginLeft:5,
+    marginTop:10
+  },
+  msg:{
+    color:'#d50000'
   },
 });
 
