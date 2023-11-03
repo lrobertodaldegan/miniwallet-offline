@@ -12,6 +12,7 @@ import GarageScreen from './src/screen/GarageScreen';
 import CarsScreen from './src/screen/CarsScreen';
 import AddCarScreen from './src/screen/AddCarScreen';
 import AddCarBillScreen from './src/screen/AddCarBillScreen';
+import mobileAds from 'react-native-google-mobile-ads';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,8 @@ const ScreenOptions = {
 }
 
 export default function App(): JSX.Element {
+  mobileAds().initialize();
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
