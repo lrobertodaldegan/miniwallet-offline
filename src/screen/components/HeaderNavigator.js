@@ -11,7 +11,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 import Label from './Label';
 import mobileAds, { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720~7808361383';
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/8258424111';
 
 mobileAds().initialize();
 

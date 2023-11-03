@@ -13,7 +13,7 @@ import TitleLabel from './components/TitleLabel';
 import Label from './components/Label';
 import Btn from './components/Btn';
 import mobileAds, { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720~7808361383';
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/8258424111';
 
 const HomeNewScreen = ({navigation}) => {
   const [title, setTitle] = useState('Miniwallet');
