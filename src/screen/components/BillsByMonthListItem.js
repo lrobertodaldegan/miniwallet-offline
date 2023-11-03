@@ -40,7 +40,7 @@ const BillsByMonthListItem = ({month,costs=0, balance=0, bills,onRemove=()=>null
                 value={`${month}`}/>
             
             <Legend icon={null} 
-                value={month === 'Fixa' ? `Gastos: R$ ${costs}` : `Gastos: R$ ${costs}\nSaldo: R$ ${balance}`}/>
+                value={month === 'Fixa' ? `Gastos: R$ ${costs.toFixed(2)}` : `Gastos: R$ ${costs.toFixed(2)}\nSaldo: R$ ${balance.toFixed(2)}`}/>
           </View>
         </TouchableHighlight>
 

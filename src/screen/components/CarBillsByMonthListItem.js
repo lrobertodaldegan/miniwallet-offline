@@ -40,9 +40,9 @@ const CarBillsByMonthListItem = ({month, costs=0, gasCost=0, bills, onRemove=()=
                 value={`${month}`}/>
             
             <Legend icon={null} 
-                value={`Total gasto: R$ ${costs}`}/>
+                value={`Total gasto: R$ ${costs.toFixed(2)}`}/>
 
-            <Legend icon={null} value={`Gasto em combustível: R$ ${gasCost}`}/>
+            <Legend icon={null} value={`Gasto em combustível: R$ ${gasCost.toFixed(2)}`}/>
           </View>
         </TouchableHighlight>
 

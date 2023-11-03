@@ -54,7 +54,7 @@ const getAll = async () => {
 const getPaymentStatus = async (billId, month, fullYear) => {
   try{
     let d = new Date();
-    let m = !month || month == null ? Months.names[d.getMonth()] : month;
+    let m = !month || month == null ? Months.names[d.getMonth()+1] : month;
     let y = !fullYear || fullYear == null ? d.getFullYear() : fullYear;
 
     let billStat = await AsyncStorage.getItem(`${paymentKeyPrefix + m}_${y}_${billId}`);

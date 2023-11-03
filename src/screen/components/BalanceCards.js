@@ -21,7 +21,7 @@ const BalanceCards = ({balance=0, totalBills=0}) => {
           <View>
             {/*<Text style={[balanceStyle, {color:'#f29c0f'}]}>*/}
             <Text style={[balanceStyle]}>
-              {`R$ ${totalBills}`}
+              {`R$ ${totalBills.toFixed(2)}`}
             </Text>
 
             <Text style={[balanceTitleStyle]}>Gastos totais</Text>
@@ -32,7 +32,7 @@ const BalanceCards = ({balance=0, totalBills=0}) => {
       <Card style={{backgroundColor:balanceColor}} content={(
           <View>
             <Text style={[balanceStyle, {color: balanceFontColor}]}>
-              {`R$ ${balance}`}
+              {`R$ ${balance.toFixed(2)}`}
             </Text>
 
             <Text style={[balanceTitleStyle, {color:balanceFontColor}]}>Saldo total</Text>

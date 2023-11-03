@@ -23,7 +23,7 @@ const PAGAR = 'PAGAR';
 
 const BillListItem = ({
     bill, 
-    refMonth=Months.names[(new Date()).getMonth()],
+    refMonth=Months.names[(new Date()).getMonth() + 1],
     refYear=(new Date()).getFullYear(),
     removable=false, 
     onRemove=()=>null, 

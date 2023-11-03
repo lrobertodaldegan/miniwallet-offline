@@ -28,23 +28,28 @@ const PAGAR = 'PAGAR';
 
 const MODAL_OPTIONS = [
   {
+    dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() - 2, 10), 
+    lbl: `${Months.names[(new Date()).getMonth() -1]}/${(new Date()).getFullYear()}`,
+    bold:false
+  },
+  {
     dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() - 1, 10), 
-    lbl: `${Months.names[(new Date()).getMonth() - 1]}/${(new Date()).getFullYear()}`,
+    lbl: `${Months.names[(new Date()).getMonth()]}/${(new Date()).getFullYear()}`,
     bold:false
   },
   {
     dt:new Date((new Date()).getFullYear(), (new Date()).getMonth(), 10), 
-    lbl: `${Months.names[(new Date()).getMonth()]}/${(new Date()).getFullYear()}`,
+    lbl: `${Months.names[(new Date()).getMonth() +1]}/${(new Date()).getFullYear()}`,
     bold:true
   },
   {
     dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() + 1, 10), 
-    lbl: `${Months.names[(new Date()).getMonth() + 1]}/${(new Date()).getFullYear()}`,
+    lbl: `${Months.names[(new Date()).getMonth() +2]}/${(new Date()).getFullYear()}`,
     bold:false
   },
   {
     dt:new Date((new Date()).getFullYear(), (new Date()).getMonth() + 2, 10), 
-    lbl: `${Months.names[(new Date()).getMonth() + 2]}/${(new Date()).getFullYear()}`,
+    lbl: `${Months.names[(new Date()).getMonth() +3]}/${(new Date()).getFullYear()}`,
     bold:false
   },
 ]
@@ -75,11 +80,11 @@ const HomeScreen = ({navigation}) => {
   }
 
   const loadItens = (dataRef) => {
-    let m = Months.names[d.getMonth()];
+    let m = Months.names[d.getMonth()+1];
     let a = d.getFullYear();
 
     if(dataRef && dataRef !== null) {
-      m = Months.names[dataRef.getMonth()];
+      m = Months.names[dataRef.getMonth()+1];
       a = dataRef.getFullYear();
     }
 
@@ -115,7 +120,7 @@ const HomeScreen = ({navigation}) => {
 
   const getMonthLegendLabel = () => {
     if(d && d !== null)
-      return `${Months.names[d.getMonth()]}/${d.getFullYear()}`;
+      return `${Months.names[d.getMonth()+1]}/${d.getFullYear()}`;
 
     return '';
   }
@@ -212,7 +217,7 @@ const HomeScreen = ({navigation}) => {
           keyExtractor={(item) => item.id}
           renderItem={({item}) => 
             <BillListItem bill={item} 
-                refMonth={Months.names[d.getMonth()]} 
+                refMonth={Months.names[d.getMonth()+1]} 
                 refYear={d.getFullYear()}
                 onUpdateBillStatus={() => update()}
             />
@@ -240,7 +245,7 @@ const HomeScreen = ({navigation}) => {
                   }}
                   renderItem={({item}) => {
                     return (
-                      <TouchableHighlight underlayColor='#e1fce8' 
+                      <TouchableHighlight underlayColor='transparent' 
                           style={modalOption}
                           onPress={() => onSelectOption(item.dt)}>
 

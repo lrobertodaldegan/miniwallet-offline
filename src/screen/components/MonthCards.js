@@ -12,19 +12,6 @@ const MonthCards = ({refMonth, action}) => {
   return (
     <>
       <View style={[styles.typeOptionsWrap, {paddingHorizontal:8.5}]}>
-        <Card action={() => action(Months.names[0])}
-            style={[
-              styles.monthCard, 
-              styles.card, 
-              refMonth == Months.names[0] ? styles.cardSelected : {}
-            ]}
-            content={
-              <View style={styles.cardLblWrap}>
-                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[0]} />
-              </View>
-            } 
-        />
-
         <Card action={() => action(Months.names[1])}
             style={[
               styles.monthCard, 
@@ -63,9 +50,7 @@ const MonthCards = ({refMonth, action}) => {
               </View>
             } 
         />
-      </View>
 
-      <View style={[styles.typeOptionsWrap, {paddingHorizontal:8.5}]}>
         <Card action={() => action(Months.names[4])}
             style={[
               styles.monthCard, 
@@ -78,7 +63,9 @@ const MonthCards = ({refMonth, action}) => {
               </View>
             } 
         />
+      </View>
 
+      <View style={[styles.typeOptionsWrap, {paddingHorizontal:8.5}]}>
         <Card action={() => action(Months.names[5])}
             style={[
               styles.monthCard, 
@@ -117,9 +104,7 @@ const MonthCards = ({refMonth, action}) => {
               </View>
             } 
         />
-      </View>
 
-      <View style={[styles.typeOptionsWrap, {paddingHorizontal:8.5}]}>
         <Card action={() => action(Months.names[8])}
             style={[
               styles.monthCard, 
@@ -132,7 +117,9 @@ const MonthCards = ({refMonth, action}) => {
               </View>
             } 
         />
+      </View>
 
+      <View style={[styles.typeOptionsWrap, {paddingHorizontal:8.5}]}>
         <Card action={() => action(Months.names[9])}
             style={[
               styles.monthCard, 
@@ -168,6 +155,19 @@ const MonthCards = ({refMonth, action}) => {
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[11]} />
+              </View>
+            } 
+        />
+
+        <Card action={() => action(Months.names[12])}
+            style={[
+              styles.monthCard, 
+              styles.card, 
+              refMonth == Months.names[12] ? styles.cardSelected : {}
+            ]}
+            content={
+              <View style={styles.cardLblWrap}>
+                <Legend icon={null}customStyle={styles.cardLbl} value={Months.names[12]} />
               </View>
             } 
         />
