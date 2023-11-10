@@ -36,7 +36,6 @@ const CarBillsScreen = ({navigation}) => {
         let i = itens[c];
 
         if(i && i.desc){
-          console.log(i);
           let key = getBillMapKey(i);
 
           if((newMap.get(key) && [...newMap.get(key).values()].length > 0) == true){
@@ -52,8 +51,11 @@ const CarBillsScreen = ({navigation}) => {
   }
 
   const getBillMapKey = (bill) => {
-    let month = bill.date.substring(3,5);
     let year = bill.date.substring(6);
+    let month = bill.date.substring(3,5);
+
+    if(month.startsWith('0'))
+      month = month.substring(1);
 
     return `${Months.names[month]}/${year}`;
   }

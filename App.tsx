@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -13,6 +13,7 @@ import CarsScreen from './src/screen/CarsScreen';
 import AddCarScreen from './src/screen/AddCarScreen';
 import AddCarBillScreen from './src/screen/AddCarBillScreen';
 import mobileAds from 'react-native-google-mobile-ads';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,10 @@ const ScreenOptions = {
 
 export default function App(): JSX.Element {
   mobileAds().initialize();
+
+  useEffect(()=>{
+    SplashScreen.hide();
+  },[]);
 
   return (
     <NavigationContainer>
