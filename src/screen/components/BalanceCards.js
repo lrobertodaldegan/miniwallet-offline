@@ -9,7 +9,7 @@ import {
 
 import Card from './Card';
 
-const BalanceCards = ({balance=0, totalBills=0}) => {
+const BalanceCards = ({balance=0, totalBills=0, navigation}) => {
 
   const balanceColor = '#f7f7f7';//balance > 0 ? '#9df79c' : '#ffeed1';
   const balanceFontColor = balance >= 0 ? '#000' : '#d50000';
@@ -27,6 +27,7 @@ const BalanceCards = ({balance=0, totalBills=0}) => {
             <Text style={[balanceTitleStyle]}>Gastos totais</Text>
           </View>
         )}
+        action={() => navigation.navigate('Bills')}
       />
 
       <Card style={{backgroundColor:balanceColor}} content={(
@@ -38,6 +39,7 @@ const BalanceCards = ({balance=0, totalBills=0}) => {
             <Text style={[balanceTitleStyle, {color:balanceFontColor}]}>Saldo total</Text>
           </View>
         )}
+        action={() => navigation.navigate('Bills')}
       />
     </View>
   );

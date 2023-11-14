@@ -17,14 +17,23 @@ const OUT = 'OUT';
 
 const FixBillForm = ({onSubmit=()=>null}) => {
   const [desc, setDesc] = useState(null);
+  const [descError, setDescError] = useState(false);
   const [type, setType] = useState(null);
+  const [typeError, setTypeError] = useState(false);
   const [value, setValue] = useState(null);
+  const [valueError, setValueError] = useState(false);
   const [msg, setMsg] = useState(null);
 
   const reset = () => {
     setDesc(null);
     setType(null);
     setValue(null);
+
+    setDescError(false);
+    setTypeError(false);
+    setValueError(false);
+
+    setMsg(null);
   }
 
   const save = () => {
@@ -48,6 +57,10 @@ const FixBillForm = ({onSubmit=()=>null}) => {
                   })
                   .catch(e => console.log(e));
     } else {
+      setDescError(!(desc && desc !== null));
+      setTypeError(!(type && type !== null));
+      setValueError(!(value && value !== null));
+
       setMsg('Informe um valor, uma descrição e selecione se é um lançamento de entrada ou saída!');
     }
   }
@@ -66,15 +79,15 @@ const FixBillForm = ({onSubmit=()=>null}) => {
       <Label value='Detalhes' customStyle={styles.lbl}/>
 
       <TextInput placeholder='Descrição da conta (Ex.: Luz)' 
-          placeholderTextColor='#333'
-          style={styles.inputStyle}
+          placeholderTextColor={descError === true ? '#d50000' : '#333'}
+          style={[styles.inputStyle, descError === true ? styles.inputErrorStyle : {}]}
           value={desc} 
           onChangeText={setDesc}
       />
 
       <TextInput placeholder='Valor da conta (Ex.: 150)' 
-          placeholderTextColor='#333'
-          style={styles.inputStyle}
+          placeholderTextColor={valueError === true ? '#d50000' : '#333'}
+          style={[styles.inputStyle, valueError === true ? styles.inputErrorStyle : {}]}
           keyboardType='numeric'
           value={value} 
           onChangeText={setValue}
@@ -82,7 +95,7 @@ const FixBillForm = ({onSubmit=()=>null}) => {
 
       <View style={styles.typeOptionsWrap}>
         <Card action={() => setType(IN)}
-            style={[styles.card, type == IN ? styles.cardSelected : {}]}
+            style={[styles.card, typeError === true ? styles.cardError : {}, type === IN ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendUp} iconSize={15}
@@ -93,7 +106,7 @@ const FixBillForm = ({onSubmit=()=>null}) => {
         />
 
         <Card action={() => setType(OUT)}
-            style={[styles.card, type == OUT ? styles.cardSelected : {}]}
+            style={[styles.card, typeError === true ? styles.cardError : {}, type == OUT ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendDown} iconSize={20}
@@ -128,6 +141,11 @@ const styles = StyleSheet.create({
     backgroundColor:'#f7f7f7',
     fontFamily: 'Montserrat-Regular',
   },
+  inputErrorStyle:{
+    borderWidth:2,
+    color: '#d50000',
+    borderColor:'#d50000',
+  },
   modalHeaderlbl:{
     flexDirection:'row',
     justifyContent:'center',
@@ -139,6 +157,11 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   },
   card:{},
+  cardError:{
+    borderWidth:2,
+    borderColor:'#d50000',
+    backgroundColor:'#ffe6e6'
+  },
   cardLblWrap:{
     flexDirection:'row',
     justifyContent:'center'
@@ -151,8 +174,9 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
   cardSelected: {
-    borderWidth:1,
+    borderWidth:2,
     borderColor: '#000',
+    backgroundColor:'#fafafa'
   },
   lbl:{
     fontSize:14,

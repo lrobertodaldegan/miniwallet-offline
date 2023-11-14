@@ -12,6 +12,8 @@ import BillService from "../service/BillService";
 import { useIsFocused } from "@react-navigation/native";
 import BillsByMonthListItem from "./components/BillsByMonthListItem";
 import HeaderNavigator from "./components/HeaderNavigator";
+import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const IN = 'IN';
 const FIXA = 'Fixa';
@@ -139,6 +141,17 @@ const BillsScreen = ({navigation}) => {
               />
             );
           }}
+          ListFooterComponent={
+            <View style={{alignItems:'center', marginTop:5}}>
+              <BannerAd
+                  unitId={adUnitIdBot}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: false,
+                  }}
+              />
+            </View>
+          }
         />
       </View>
   );

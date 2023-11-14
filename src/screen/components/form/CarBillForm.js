@@ -6,7 +6,14 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import { faWarning, faGasPump, faTruckMonster, faScrewdriverWrench, faPlus, faCar } from "@fortawesome/free-solid-svg-icons";
+import { 
+  faWarning, 
+  faGasPump, 
+  faTruckMonster, 
+  faScrewdriverWrench, 
+  faPlus, 
+  faCar 
+} from "@fortawesome/free-solid-svg-icons";
 import FloatBtn from '../FloatBtn';
 import CarBillService from "../../../service/CarBillService";
 import CarService from "../../../service/CarService";
@@ -20,6 +27,10 @@ const CarBillForm = ({onSubmit}) => {
   const [obs, setObs] = useState(null);
   const [value, setValue] = useState(null);
   const [day, setDay] = useState(null);
+  const [descError, setDescError] = useState(false);
+  const [carError, setCarError] = useState(false);
+  const [valueError, setValueError] = useState(false);
+  const [dayError, setDayError] = useState(false);
   const [cars, setCars] = useState([]);
   const [msg, setMsg] = useState(null);
 
@@ -46,6 +57,7 @@ const CarBillForm = ({onSubmit}) => {
 
   const save = () => {
     if((car && car !== null) && (value && value !== null)
+                             && (desc && desc !== null)
                              && (day && day !== null)){
       setMsg(null);
       
@@ -61,7 +73,12 @@ const CarBillForm = ({onSubmit}) => {
                   .then((result) => onSubmit())
                   .catch(e => console.log(e));
     } else {
-      setMsg('Selecione um carro, informe um valor e a data para continuar!');
+      setCarError(!(car && car !== null));
+      setValueError(!(value && value !== null));
+      setDayError(!(day && day !== null));
+      setDescError(!(desc && desc !== null));
+
+      setMsg('Selecione um carro, informe um valor, selecione o tipo de gasto e a data para continuar!');
     }
   }
 
@@ -71,7 +88,7 @@ const CarBillForm = ({onSubmit}) => {
     cars.forEach(c => {
       cs.push(
         <Card action={() => setCar(car == c.id ? null : c.id)} key={c.id}
-            style={[styles.cardOption, car == c.id ? styles.cardSelected : {}]}
+            style={[styles.cardOption, carError === true ? styles.cardError : {}, car == c.id ? styles.cardSelected : {}]}
             content={<Legend icon={faCar} value={c.id} customStyle={{justifyContent:'center'}}/>}
         />
       );
@@ -96,17 +113,17 @@ const CarBillForm = ({onSubmit}) => {
 
         <View style={styles.cardWrap}>
           <Card action={() => setDesc('Combustível')}
-              style={[styles.cardOption, desc == 'Combustível' ? styles.cardSelected : {}]}
+              style={[styles.cardOption, descError === true ? styles.cardError : {}, desc == 'Combustível' ? styles.cardSelected : {}]}
               content={<Legend icon={faGasPump} value='Combustível' customStyle={{justifyContent:'center'}}/>}
           />
 
           <Card action={() => setDesc('Borracharia')}
-              style={[styles.cardOption, desc == 'Borracharia' ? styles.cardSelected : {}]}
+              style={[styles.cardOption, descError === true ? styles.cardError : {}, desc == 'Borracharia' ? styles.cardSelected : {}]}
               content={<Legend icon={faTruckMonster} value='Borracharia' customStyle={{justifyContent:'center'}}/>}
           />
 
           <Card action={() => setDesc('Manutenção')}
-              style={[styles.cardOption, desc == 'Manutenção' ? styles.cardSelected : {}]}
+              style={[styles.cardOption, descError === true ? styles.cardError : {}, desc == 'Manutenção' ? styles.cardSelected : {}]}
               content={<Legend icon={faScrewdriverWrench} value='Manutenção' customStyle={{justifyContent:'center'}}/>}
           />
         </View>
@@ -120,16 +137,16 @@ const CarBillForm = ({onSubmit}) => {
         <Label value='Detalhes (valor, data e observações)' customStyle={styles.lbl}/>
 
         <TextInput placeholder='Valor' 
-            placeholderTextColor='#333'
-            style={[styles.inputStyle, styles.inputHalf]}
+            placeholderTextColor={valueError === true ? '#d50000' : '#333'}
+            style={[styles.inputStyle, styles.inputHalf, valueError === true ? styles.inputErrorStyle : {}]}
             keyboardType='numeric'
             value={value} 
             onChangeText={setValue}
         />
 
         <TextInput placeholder='Data (DD/MM/YYYY)' 
-            placeholderTextColor='#333'
-            style={[styles.inputStyle, styles.inputHalf]}
+            placeholderTextColor={dayError === true ? '#d50000' : '#333'}
+            style={[styles.inputStyle, styles.inputHalf, dayError === true ? styles.inputErrorStyle : {}]}
             value={day} 
             onChangeText={setDay}
         />
@@ -172,6 +189,11 @@ const styles = StyleSheet.create({
     backgroundColor:'#fafafa',
     fontFamily: 'Montserrat-Regular',
   },
+  inputErrorStyle:{
+    borderWidth:2,
+    color: '#d50000',
+    borderColor:'#d50000',
+  },
   cardWrap:{
     flexDirection:'row',
     paddingHorizontal:10
@@ -183,6 +205,12 @@ const styles = StyleSheet.create({
   cardSelected: {
     borderWidth:1,
     borderColor: '#000',
+    backgroundColor:'#fafafa'
+  },
+  cardError:{
+    borderWidth:2,
+    borderColor:'#d50000',
+    backgroundColor:'#ffe6e6'
   },
   modalHeaderlbl:{
     flexDirection:'row',

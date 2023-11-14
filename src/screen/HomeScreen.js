@@ -20,6 +20,8 @@ import HeaderNavigator from "./components/HeaderNavigator";
 import Modal from "./components/Modal";
 import Label from "./components/Label";
 import Board from "./components/Board";
+import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const IN = 'IN';
 const OUT = 'OUT';
@@ -140,8 +142,9 @@ const HomeScreen = ({navigation}) => {
       if(OUT === is[i].type){
         BillService.getStatus(is[i].id, is[i].refMonth, is[i].refYear)
                   .then((sts) => {
-                    if(PAGAR === sts)
+                    if(PAGAR === sts){
                       setOpenBills(true);
+                    }
                   })
                   .catch((e) => console.log(e));
       }
@@ -149,8 +152,10 @@ const HomeScreen = ({navigation}) => {
   }
 
   const getBoard = () => {
-    if(openBills)
-      return <Board content={<Label value={openBills ? 'Existem contas em aberto!' : 'Ok!'}/>}/>;
+    if(openBills){
+      return <Board content={<Label value={`Temos contas em aberto!`}/>}
+                  style={{backgroundColor:'#ffe8a8'}}/>;
+    }
 
     return <></>
   }
@@ -174,21 +179,20 @@ const HomeScreen = ({navigation}) => {
 
                 <TitleLabel value='Carteira' customStyle={title}/>
 
-                <BalanceCards balance={new Number(getBalanceVal())} 
-                    totalBills={new Number(getTotalBillsVal())}
-                />
-
                 {getBoard()}
 
-                <TitleLabel value='Contas e gastos' customStyle={title}/>
+                <BalanceCards balance={new Number(getBalanceVal())} 
+                    totalBills={new Number(getTotalBillsVal())}
+                    navigation={navigation}
+                />
 
-                <TouchableHighlight 
+                {/* <TouchableHighlight 
                     underlayColor='transparent'
                     style={refreshBtnStyle}
                     onPress={() => update()}>
                   
                   <Legend value='Atualizar'/>
-                </TouchableHighlight>
+                </TouchableHighlight> */}
 
                 <View style={listOptionsStyle}>
                   <TouchableHighlight 
@@ -221,6 +225,17 @@ const HomeScreen = ({navigation}) => {
                 refYear={d.getFullYear()}
                 onUpdateBillStatus={() => update()}
             />
+          }
+          ListFooterComponent={
+            <View style={{alignItems:'center', marginTop:5}}>
+              <BannerAd
+                  unitId={adUnitIdBot}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: false,
+                  }}
+              />
+            </View>
           }
         />
 
@@ -272,15 +287,16 @@ const listStyle = StyleSheet.create({
 
 const title = StyleSheet.create({
   textAlign:'center',
-  color:'#000'
+  color:'#000',
+  marginBottom:20
 });
 
 const listOptionsStyle = StyleSheet.create({
   width: screenWidth,
   flexDirection: 'row',
   paddingHorizontal: 20,
-  justifyContent:'space-between'
-
+  justifyContent:'space-between',
+  marginTop:10
 });
 
 const loLblStyle = StyleSheet.create({
@@ -293,6 +309,7 @@ const loBtnStyle = StyleSheet.create({
   width: (screenWidth / 2) - 20,
   justifyContent:'flex-end',
   paddingBottom: 10,
+  
 });
 
 const refreshBtnStyle = StyleSheet.create({

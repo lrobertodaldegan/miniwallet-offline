@@ -39,8 +39,9 @@ const AddBillScreen = ({navigation}) => {
   const loadBoard = () => {
     if(success) {
       return (
-        <Board action={() => reset()} icon={faCheck} iconStyle={{color:'#000'}}
+        <Board action={() => reset()} icon={faCheck} iconStyle={{color:'#244018'}}
             content={<Label value='Ok! Adicionado com sucesso!' />} 
+            style={{backgroundColor:'#90ff61'}}
         />
       );
     }
@@ -49,7 +50,7 @@ const AddBillScreen = ({navigation}) => {
   }
 
   return (
-    <ScrollView style={styles.wrap}>
+    <ScrollView style={styles.wrap} keyboardDismissMode='on-drag' keyboardShouldPersistTaps='always'>
       <HeaderNavigator icon={faWallet} 
           navigation={navigation} 
           action={() => navigation.navigate('Home')}
@@ -60,7 +61,7 @@ const AddBillScreen = ({navigation}) => {
       <View style={styles.formOptionsWrap}>
         <Card action={() => setForm(FIXA)}
             style={form == FIXA ? styles.cardSelected : {}}
-            content={<Label customStyle={styles.cardLbl} value={'Add conta fixa'} />} 
+            content={<Label customStyle={styles.cardLbl} value={'Add gasto fixo'} />} 
         />
 
         <Card action={() => setForm(OUTRAS)}

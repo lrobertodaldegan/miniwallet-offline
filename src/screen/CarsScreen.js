@@ -16,6 +16,8 @@ import FloatBtn from "./components/FloatBtn";
 import Legend from "./components/Legend";
 import TitleLabel from "./components/TitleLabel";
 import HeaderNavigator from "./components/HeaderNavigator";
+import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const CarsScreen = ({navigation}) => {
   const [itens, setItens] = useState([]);
@@ -71,6 +73,17 @@ const CarsScreen = ({navigation}) => {
               <CarListItem car={item} removable={true} onRemove={() => init()}/>
             );
           }}
+          ListFooterComponent={
+            <View style={{alignItems:'center', marginTop:5}}>
+              <BannerAd
+                  unitId={adUnitIdBot}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: false,
+                  }}
+              />
+            </View>
+          }
         />
 
         <FloatBtn icon={faCar} label='Adicionar carro' 

@@ -5,6 +5,7 @@ import {
   Dimensions,
   StatusBar,
   TouchableHighlight,
+  ScrollView,
 } from 'react-native';
 
 import { faWallet, faWarehouse } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +14,8 @@ import TitleLabel from './components/TitleLabel';
 import Label from './components/Label';
 import Btn from './components/Btn';
 import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/8258424111';
+const adUnitIdTop = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/8258424111';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const HomeNewScreen = ({navigation}) => {
   const [title, setTitle] = useState('Miniwallet');
@@ -22,10 +24,10 @@ const HomeNewScreen = ({navigation}) => {
     <>
       <StatusBar barStyle='dark-content' backgroundColor='#f7f7f7'/>
 
-      <View style={styles.nextPageOptStyle} >
+      <ScrollView contentContainerStyle={styles.nextPageOptStyle} >
         <View style={styles.ad}>
           <BannerAd
-              unitId={adUnitId}
+              unitId={adUnitIdTop}
               size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
               requestOptions={{
                 requestNonPersonalizedAdsOnly: false,
@@ -64,7 +66,17 @@ const HomeNewScreen = ({navigation}) => {
         <Label value={'Criado por\nLucas Roberto'}
             customStyle={[styles.lblLgnd]}
         />
-      </View>
+
+        <View style={styles.ad}>
+          <BannerAd
+              unitId={adUnitIdBot}
+              size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: false,
+              }}
+          />
+        </View>
+      </ScrollView>
     </>
   );
 }
@@ -75,16 +87,16 @@ const screenHeight = Dimensions.get('screen').height;
 const styles = StyleSheet.create({
   nextPageOptStyle:{
     width: screenWidth,
-    height:screenHeight,
+    height:screenHeight - 80,
     backgroundColor:'#f7f7f7',
     paddingHorizontal:10,
-    
   },
   title:{
     color: '#000',
     textAlign:'center',
     fontSize:40,
-    marginVertical: screenHeight * 0.09,
+    marginTop: screenHeight * 0.07,
+    marginBottom: screenHeight * 0.07,
   },
   lbl:{
     color: '#fff',
@@ -94,13 +106,14 @@ const styles = StyleSheet.create({
     width:screenWidth/2
   },
   lblLgnd:{
-    marginTop:40,
+    marginTop:screenHeight * 0.04,
+    marginBottom:screenHeight * 0.04,
     color: '#000',
     fontSize: 10,
     textAlign:'center'
   },
   card:{
-    marginTop:40,
+    marginTop:screenHeight * 0.03,
     backgroundColor:'#000',
     borderRadius:20,
     borderTopLeftRadius:0,

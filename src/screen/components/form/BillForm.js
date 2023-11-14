@@ -19,11 +19,17 @@ const OUT = 'OUT';
 
 const BillForm = ({onSubmit=()=>null}) => {
   const [desc, setDesc] = useState(null);
+  const [descError, setDescError] = useState(false);
   const [type, setType] = useState(null);
+  const [typeError, setTypeError] = useState(false);
   const [cat, setCat] = useState(null);
   const [value, setValue] = useState(null);
+  const [valueError, setValueError] = useState(false);
   const [refMonth, setRefMonth] = useState(null);
+  const [refMonthError, setRefMonthError] = useState(false);
   const [refYear, setRefYear] = useState(null);
+  const [refYearError, setRefYearError] = useState(false);
+
   const [msg, setMsg] = useState(null);
 
   const reset = () => {
@@ -33,6 +39,14 @@ const BillForm = ({onSubmit=()=>null}) => {
     setValue(null);
     setRefMonth(null);
     setRefYear(null);
+
+    setDescError(null);
+    setTypeError(null);
+    setValueError(null);
+    setRefMonthError(null);
+    setRefYearError(null);
+
+    setMsg(null);
   }
 
   const save = () => {
@@ -60,6 +74,12 @@ const BillForm = ({onSubmit=()=>null}) => {
                   })
                   .catch(e => console.log(e));
     } else {
+      setDescError(!(desc && desc !== null));
+      setTypeError(!(type && type!== null));
+      setValueError(!(value && value !== null));
+      setRefMonthError(!(refMonth && refMonth !== null));
+      setRefYearError(!(refYear  && refYear  !== null));
+
       setMsg('Informe uma descrição, o valor, o mês e ano de referência e se é um lançamento de entrada ou saída!');
     }
   }
@@ -77,30 +97,32 @@ const BillForm = ({onSubmit=()=>null}) => {
       <Label value='Detalhes' customStyle={styles.lbl}/>
 
       <TextInput placeholder='Descrição (Ex.: Compra no shopping)' 
-          placeholderTextColor='#333'
-          style={styles.inputStyle}
+          placeholderTextColor={descError === true ? '#d50000' : '#333'}
+          style={[styles.inputStyle, descError === true ? styles.inputErrorStyle : {}]}
           value={desc} 
           onChangeText={setDesc}
       />
 
       <TextInput placeholder='Categoria (Ex.: Cartão de crédito)' 
           placeholderTextColor='#333'
-          style={styles.inputStyle}
+          style={[styles.inputStyle]}
           value={cat} 
           onChangeText={setCat}
       />
 
       <TextInput placeholder='Valor (Ex.: 120)' 
-          placeholderTextColor='#333'
-          style={styles.inputStyle}
+          placeholderTextColor={valueError === true ? '#d50000' : '#333'}
+          style={[styles.inputStyle, valueError === true ? styles.inputErrorStyle : {}]}
           keyboardType='numeric'
           value={value} 
           onChangeText={setValue}
       />
 
+      <Label value='Tipo' customStyle={styles.lbl}/>
+
       <View style={styles.typeOptionsWrap}>
         <Card action={() => setType(IN)}
-            style={[styles.card, type == IN ? styles.cardSelected : {}]}
+            style={[styles.card, typeError === true ? styles.cardError : {}, type == IN ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendUp} iconSize={15} 
@@ -111,7 +133,7 @@ const BillForm = ({onSubmit=()=>null}) => {
         />
 
         <Card action={() => setType(OUT)}
-            style={[styles.card, type == OUT ? styles.cardSelected : {}]}
+            style={[styles.card, typeError === true ? styles.cardError : {}, type == OUT ? styles.cardSelected : {}]}
             content={
               <View style={styles.cardLblWrap}>
                 <Legend icon={faArrowTrendDown} iconSize={15} 
@@ -124,11 +146,11 @@ const BillForm = ({onSubmit=()=>null}) => {
 
       <Label value='Mês de referência' customStyle={styles.lbl}/>
 
-      <MonthCards refMonth={refMonth} action={setRefMonth}/>
+      <MonthCards refMonth={refMonth} action={setRefMonth} style={refMonthError === true ? styles.cardError : {}}/>
 
       <Label value='Ano de referência' customStyle={styles.lbl}/>
 
-      <YearCards refYear={refYear} action={setRefYear}/>
+      <YearCards refYear={refYear} action={setRefYear} style={refYearError === true ? styles.cardError : {}}/>
 
       {renderMsg()}
 
@@ -154,6 +176,11 @@ const styles = StyleSheet.create({
     backgroundColor:'#fafafa',
     fontFamily: 'Montserrat-Regular',
   },
+  inputErrorStyle:{
+    borderWidth:2,
+    color: '#d50000',
+    borderColor:'#d50000',
+  },
   modalHeaderlbl:{
     flexDirection:'row',
     justifyContent:'center',
@@ -165,6 +192,11 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   },
   card:{marginVertical:5},
+  cardError:{
+    borderWidth:2,
+    borderColor:'#d50000',
+    backgroundColor:'#ffe6e6'
+  },
   cardLblWrap:{
     flexDirection:'row',
     justifyContent:'center'
@@ -178,6 +210,7 @@ const styles = StyleSheet.create({
   },
   cardSelected: {
     borderWidth:1,
+    backgroundColor:'#fafafa',
     borderColor: '#000',
   },
   lbl:{

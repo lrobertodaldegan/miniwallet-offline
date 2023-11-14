@@ -13,7 +13,7 @@ import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons/faTrian
 const Board = ({content, icon=faTriangleExclamation, iconStyle={}, style={}, action= () => null}) => {
   return (
     <TouchableHighlight 
-        underlayColor='#e1fce8'
+        underlayColor='#fafafa'
         style={[cardStyle, style]}
         onPress={() => action()}>
 
@@ -44,13 +44,14 @@ const cardStyle = StyleSheet.create({
 
 const iiconStyle = StyleSheet.create({
   color:'#ffc25e',
-  marginRight:20
+  marginTop:5
 });
 
 const contentWrapper = StyleSheet.create({
   flexDirection:'row',
   alignItens: 'center',
-  padding:20,
+  justifyContent:'center',
+  paddingVertical:20,
 });
 
 export default Board;

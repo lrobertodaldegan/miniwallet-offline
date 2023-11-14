@@ -10,9 +10,12 @@ import FloatBtn from '../FloatBtn';
 import CarService from "../../../service/CarService";
 import TitleLabel from '../TitleLabel';
 import Legend from '../Legend';
+import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const CarForm = ({onSubmit}) => {
   const [car, setCar] = useState(null);
+  const [carError, setCarError] = useState(false);
   const [msg, setMsg] = useState(null);
 
   const save = () => {
@@ -26,6 +29,8 @@ const CarForm = ({onSubmit}) => {
                   .then((result) => onSubmit())
                   .catch(e => console.log(e));
     } else {
+      setCarError(!(car && car !== null));
+
       setMsg('Informe um nome válido pro carro!');
     }
   }
@@ -45,13 +50,23 @@ const CarForm = ({onSubmit}) => {
         <TitleLabel value='Novo carro' customStyle={styles.title}/>
 
         <TextInput placeholder='Nome/Apelido do Carro' 
-            placeholderTextColor='#333'
-            style={[styles.inputStyle, styles.inputHalf]}
+            placeholderTextColor={carError === true ? '#d50000' : '#333'}
+            style={[styles.inputStyle, styles.inputHalf, carError === true ? styles.inputErrorStyle : {}]}
             value={car} 
             onChangeText={setCar}
         />
 
         {renderMsg()}
+
+        <View style={{alignItems:'center', marginTop:20}}>
+          <BannerAd
+              unitId={adUnitIdBot}
+              size={BannerAdSize.MEDIUM_RECTANGLE}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: false,
+              }}
+          />
+        </View>
       </View>
 
       <FloatBtn icon={faSave} label='Salvar carro' action={() => save()}/>
@@ -81,6 +96,11 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor:'#fafafa',
     fontFamily: 'Montserrat-Regular',
+  },
+  inputErrorStyle:{
+    borderWidth:2,
+    color: '#d50000',
+    borderColor:'#d50000',
   },
   cardWrap:{
     flexDirection:'row',

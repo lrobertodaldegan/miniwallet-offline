@@ -20,6 +20,8 @@ import TitleLabel from "./components/TitleLabel";
 import Modal from "./components/Modal";
 import HeaderNavigator from "./components/HeaderNavigator";
 import Card from "./components/Card";
+import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const GarageScreen = ({navigation}) => {
   const [itens, setItens] = useState([]);
@@ -166,9 +168,6 @@ const GarageScreen = ({navigation}) => {
                 )
               }}
               renderItem={({item}) => {
-
-                console.log(item);
-
                 return (
                   <TouchableHighlight underlayColor='#e1fce8' 
                       style={modalOption}
@@ -263,6 +262,17 @@ const GarageScreen = ({navigation}) => {
                     onRemove={() => init()}/>
             );
           }}
+          ListFooterComponent={
+            <View style={{alignItems:'center', marginTop:5}}>
+              <BannerAd
+                  unitId={adUnitIdBot}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: false,
+                  }}
+              />
+            </View>
+          }
         />
 
         <FloatBtn icon={faScrewdriverWrench} label='Adicionar gasto com carro' 

@@ -12,6 +12,8 @@ import CarBillsByMonthListItem from "./components/CarBillsByMonthListItem";
 import HeaderNavigator from "./components/HeaderNavigator";
 import { faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import Months from "../service/Months";
+import { BannerAd,BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitIdBot = __DEV__ ? TestIds.BANNER : 'ca-app-pub-2420598559068720/9810617852';
 
 const CarBillsScreen = ({navigation}) => {
   const [mapItensByMonth, setMapItensByMonth] = useState(null);
@@ -129,6 +131,17 @@ const CarBillsScreen = ({navigation}) => {
               />
             );
           }}
+          ListFooterComponent={
+            <View style={{alignItems:'center', marginTop:5}}>
+              <BannerAd
+                  unitId={adUnitIdBot}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: false,
+                  }}
+              />
+            </View>
+          }
         />
       </View>
   );

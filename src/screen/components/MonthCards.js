@@ -8,7 +8,7 @@ import Months from '../../service/Months';
 import Card from './Card';
 import Legend from './Legend';
 
-const MonthCards = ({refMonth, action}) => {
+const MonthCards = ({refMonth, action, style={}}) => {
   return (
     <>
       <View style={[styles.typeOptionsWrap, {paddingHorizontal:8.5}]}>
@@ -16,6 +16,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[1] ? styles.cardSelected : {}
             ]}
             content={
@@ -29,6 +30,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[2] ? styles.cardSelected : {}
             ]}
             content={
@@ -42,6 +44,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[3] ? styles.cardSelected : {}
             ]}
             content={
@@ -55,6 +58,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[4] ? styles.cardSelected : {}
             ]}
             content={
@@ -70,6 +74,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[5] ? styles.cardSelected : {}
             ]}
             content={
@@ -83,6 +88,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[6] ? styles.cardSelected : {}
             ]}
             content={
@@ -96,6 +102,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[7] ? styles.cardSelected : {}
             ]}
             content={
@@ -109,6 +116,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[8] ? styles.cardSelected : {}
             ]}
             content={
@@ -124,6 +132,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[9] ? styles.cardSelected : {}
             ]}
             content={
@@ -137,6 +146,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[10] ? styles.cardSelected : {}
             ]}
             content={
@@ -150,6 +160,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[11] ? styles.cardSelected : {}
             ]}
             content={
@@ -163,6 +174,7 @@ const MonthCards = ({refMonth, action}) => {
             style={[
               styles.monthCard, 
               styles.card, 
+              style,
               refMonth == Months.names[12] ? styles.cardSelected : {}
             ]}
             content={
@@ -183,6 +195,11 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   },
   card:{marginVertical:5},
+  cardError:{
+    borderWidth:2,
+    borderColor:'#d50000',
+    backgroundColor:'#ffe6e6'
+  },
   cardLblWrap:{
     flexDirection:'row',
     justifyContent:'center'
@@ -197,6 +214,7 @@ const styles = StyleSheet.create({
   cardSelected: {
     borderWidth:1,
     borderColor: '#000',
+    backgroundColor:'#fafafa',
   },
   monthCard: {
     width:(screenWidth - 20) / 4.1,

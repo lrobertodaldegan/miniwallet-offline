@@ -7,12 +7,13 @@ import {
 import Card from './Card';
 import Legend from './Legend';
 
-const YearCards = ({refYear, action}) => {
+const YearCards = ({refYear, action, style={}}) => {
   return (
     <View style={[styles.typeOptionsWrap, {paddingHorizontal:8}]}>
       <Card action={() => action(new Date().getFullYear() - 1)}
           style={[
             styles.yearCard, 
+            style,
             styles.card, refYear == new Date().getFullYear() - 1 ? styles.cardSelected : {}
           ]}
           content={
@@ -25,6 +26,7 @@ const YearCards = ({refYear, action}) => {
       <Card action={() => action(new Date().getFullYear())}
           style={[
             styles.yearCard, 
+            style,
             styles.card, refYear == new Date().getFullYear() ? styles.cardSelected : {}
           ]}
           content={
@@ -37,6 +39,7 @@ const YearCards = ({refYear, action}) => {
       <Card action={() => action(new Date().getFullYear() + 1)}
           style={[
             styles.yearCard, 
+            style,
             styles.card, refYear == new Date().getFullYear() + 1 ? styles.cardSelected : {}
           ]}
           content={
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
   cardSelected: {
     borderWidth:1,
     borderColor: '#000',
+    backgroundColor:'#fafafa',
   },
   yearCard: {
     width:(screenWidth - 20) / 3.1,
